@@ -1,0 +1,16 @@
+name: dbs2
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: dbs2-postgres
+    environment:
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PW}
+      - POSTGRES_DB=${PG_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  postgres_data:
