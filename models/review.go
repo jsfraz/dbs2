@@ -1,9 +1,14 @@
 package models
 
 type Review struct {
-	ID     uint
-	UserID uint
-	BookID uint
-	Stars  int
-	Text   string
+	ID    uint
+	BookId uint
+	UserId uint
+	Stars int
+	Text  string
+
+	// Kniha
+	Book     Book
+	// Uživatel
+	User     User
 }

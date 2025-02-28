@@ -27,6 +27,8 @@ func main() {
 		&models.Genre{},
 		&models.Book{},
 		&models.Review{},
+		&models.Order{},
+		&models.Discount{},
 	)
 	if err != nil {
 		log.Panicln(err)
