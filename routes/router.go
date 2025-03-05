@@ -1,0 +1,70 @@
+package routes
+
+import (
+	"dbs2/utils"
+	"fmt"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+	"github.com/wI2L/fizz"
+	"github.com/wI2L/fizz/openapi"
+)
+
+func NewRouter() (*fizz.Fizz, error) {
+	// Instance Ginu
+	engine := gin.New()
+	// Defaultní cors config, Allow Origin, Authorization header
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowCredentials = true
+	config.AllowHeaders = append(config.AllowHeaders, "Authorization")
+	engine.Use(cors.New(config))
+	// fizz instance
+	fizz := fizz.NewFromEngine(engine)
+	// security
+	fizz.Generator().SetSecuritySchemes(map[string]*openapi.SecuritySchemeOrRef{
+		"bearerAuth": {
+			SecurityScheme: &openapi.SecurityScheme{
+				Type:         "http",
+				Scheme:       "bearer",
+				BearerFormat: "JWT",
+			},
+		},
+	})
+
+	// Servery
+	fizz.Generator().SetServers([]*openapi.Server{
+		{
+			Description: utils.GetSingleton().Config.AppUrl,
+			URL:         fmt.Sprintf("%s/api/openapi.json", utils.GetSingleton().Config.AppUrl),
+		},
+	})
+
+	// OpenApi info
+	infos := &openapi.Info{
+		Title:       "dbs2",
+		Description: "Backend pro projekt pro KIKM/DBS2 a KIT/TNPW2.",
+	}
+
+	// Základní API routa
+	grp := fizz.Group("api", "", "")
+
+	// OpenAPI
+	if utils.GetSingleton().Config.Swagger {
+		grp.GET("openapi.json", nil, fizz.OpenAPI(infos, "json"))
+		// Swagger UI (https://github.com/swagger-api/swagger-ui/blob/HEAD/docs/usage/installation.md#unpkg)
+		engine.LoadHTMLGlob("html/*.html")
+		engine.GET("/swagger", func(c *gin.Context) {
+			c.HTML(200, "swagger.html", gin.H{
+				"url": fmt.Sprintf("%s/api/openapi.json", utils.GetSingleton().Config.AppUrl),
+			})
+		})
+	}
+
+	// TODO Ostatní routy
+
+	if len(fizz.Errors()) != 0 {
+		return nil, fmt.Errorf("errors: %v", fizz.Errors())
+	}
+	return fizz, nil
+}

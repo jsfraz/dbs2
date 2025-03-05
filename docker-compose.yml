@@ -1,7 +1,10 @@
 name: dbs2
 
+# TODO komentáře
+
 services:
-  postgres:
+
+  dbs2-postgres:
     image: postgres:17-alpine
     container_name: dbs2-postgres
     environment:
@@ -13,6 +16,25 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: always
+
+  dbs2:
+    container_name: dbs2
+    build:
+      context: .
+    restart: always
+    depends_on:
+      - dbs2-postgres
+    ports:
+       - "127.0.0.1:8081:8081"
+    environment:
+      - GIN_MODE=${GIN_MODE}
+      - APP_URL=${APP_URL}
+      - SWAGGER=${SWAGGER}
+      - PG_USER=${PG_USER}
+      - PG_PW=${PG_PW}
+      - PG_HOST=${PG_HOST}
+      - PG_PORT=${PG_PORT}
+      - PG_DB=${PG_DB}
 
 volumes:
   postgres_data:
