@@ -1,15 +1,15 @@
 package models
 
-import "time"
+import "gorm.io/datatypes"
 
 type Book struct {
-	ID        uint
-	Name      string
-	AuthorID  uint
-	Summary   string
-	Isbn      string
-	Price     uint64
-	Published time.Time
+	ID       uint
+	Name     string
+	AuthorID uint
+	Summary  string
+	Isbn     string
+	Price    uint64
+	datatypes.Date
 
 	// Žánry
 	Genres []Genre `gorm:"many2many:bookGenres;"`
