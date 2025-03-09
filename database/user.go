@@ -19,7 +19,7 @@ func GetUserByMail(mail string) (*models.User, error) {
 	return &user, nil
 }
 
-// Zjistí zda uživatel existuje.
+// Zjistí zda uživatel existuje podle mailu.
 //
 //	@param mail
 //	@return bool
@@ -43,4 +43,32 @@ func CreateUser(user models.User) error {
 		return err
 	}
 	return nil
+}
+
+// Zjistí zda uživatel existuje podle ID.
+//
+//	@param id
+//	@return bool
+//	@return error
+func UserExistsById(id uint) (bool, error) {
+	var count int64
+	err := utils.GetSingleton().PostgresDb.Model(&models.User{}).Where("id = ?", id).Count(&count).Error
+	if err != nil {
+		return false, err
+	}
+	return count == 1, nil
+}
+
+// Vrátí uživatele podle ID.
+//
+//	@param id
+//	@return *models.User
+//	@return error
+func GetUserById(id uint) (*models.User, error) {
+	var user models.User
+	err := utils.GetSingleton().PostgresDb.Model(&models.User{}).Where("id = ?", id).First(&user).Error
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
 }

@@ -7,20 +7,20 @@ import (
 )
 
 type User struct {
-	ID           uint
-	FirstName    string
-	LastName     string
-	Mail         string
-	Role         Role
-	Points       int
-	PasswordHash string
+	ID           uint   `json:"id" validate:"required"`
+	FirstName    string `json:"firstName" validate:"required"`
+	LastName     string `json:"lastName" validate:"required"`
+	Mail         string `json:"mail" validate:"required"`
+	Role         Role   `json:"role" validate:"required"`
+	Points       int    `json:"points" validate:"required"`
+	PasswordHash string `json:"-"`
 
 	// Košík
-	Cart []Book `gorm:"many2many:carts;"` // TODO skrýt ve JSONu
+	Cart []Book `json:"-" gorm:"many2many:carts;"`
 	// Seznam přání
-	Wishlist []Book `gorm:"many2many:wishlists;"` // TODO skrýt ve JSONu
+	Wishlist []Book `json:"-" gorm:"many2many:wishlists;"`
 	// Adresy uživatele
-	Addresses []Address `gorm:"many2many:user_addresses;"` // TODO skrýt ve JSONu
+	Addresses []Address `json:"-" gorm:"many2many:user_addresses;"`
 }
 
 func NewUser(firstName, lastName, mail string, role Role, password string) (*User, error) {

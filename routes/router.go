@@ -10,6 +10,10 @@ import (
 	"github.com/wI2L/fizz/openapi"
 )
 
+// Výchozí router.
+//
+//	@return *fizz.Fizz
+//	@return error
 func NewRouter() (*fizz.Fizz, error) {
 	// Instance Ginu
 	engine := gin.New()
@@ -63,6 +67,7 @@ func NewRouter() (*fizz.Fizz, error) {
 
 	// Ostatní routy
 	AuthRoute(grp)
+	UserRoute(grp)
 
 	if len(fizz.Errors()) != 0 {
 		return nil, fmt.Errorf("errors: %v", fizz.Errors())

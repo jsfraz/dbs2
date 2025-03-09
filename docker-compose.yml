@@ -8,6 +8,7 @@ services:
     image: postgres:17-alpine
     container_name: dbs2-postgres
     environment:
+      - PG_USER=${PG_USER}
       - POSTGRES_PASSWORD=${PG_PW}
       - POSTGRES_DB=${PG_DB}
     ports:

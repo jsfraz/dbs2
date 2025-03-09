@@ -12,12 +12,9 @@ import (
 //	@param errorStatuses
 //	@param useSecurity
 //	@return []fizz.OperationOption
-func CreateOperationOption(summary string, description string, useSecurity bool) []fizz.OperationOption {
+func CreateOperationOption(summary string, useSecurity bool) []fizz.OperationOption {
 	var option []fizz.OperationOption
 	option = append(option, fizz.Summary(summary))
-	if description != "" {
-		option = append(option, fizz.Description(description))
-	}
 	if useSecurity {
 		option = append(option, fizz.Security(&openapi.SecurityRequirement{
 			"bearerAuth": []string{},

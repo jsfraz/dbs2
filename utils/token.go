@@ -2,15 +2,17 @@ package utils
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 )
 
 // Vrátí sub claim JWT tokenu.
 //
 // @param tokenStr
-// @return uint64
+// @return uint
 // @return error
 func GetUserIdFromToken(tokenStr string) (uint, error) {
 	token, _, err := new(jwt.Parser).ParseUnverified(tokenStr, jwt.MapClaims{})
@@ -44,4 +46,37 @@ func GenerateAccessToken(id uint) (string, error) {
 
 	// create and sign token
 	return token.SignedString([]byte(GetSingleton().Config.AccessTokenSecret))
+}
+
+// Kontrola tokenu.
+//
+//	@param tokenStr
+//	@param secret
+//	@return uint
+//	@return error
+func TokenValid(tokenStr string, secret string) (uint, error) {
+	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("nečekána podepisovací metoda: %v", token.Header["alg"])
+		}
+		return []byte(secret), nil
+	})
+	if err != nil {
+		return 0, err
+	}
+	claims, _ := token.Claims.(jwt.MapClaims)
+	fId := claims["sub"].(float64)
+	return uint(fId), nil
+}
+
+// Vrátí token z kontextu
+//
+//	@param c
+//	@return string
+func ExtractTokenFromContext(c *gin.Context) string {
+	bearerToken := c.Request.Header.Get("Authorization")
+	if len(strings.Split(bearerToken, " ")) == 2 {
+		return strings.Split(bearerToken, " ")[1]
+	}
+	return ""
 }
