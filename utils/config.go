@@ -18,12 +18,20 @@ type Config struct {
 	// Swagger
 	Swagger bool `envconfig:"SWAGGER" required:"true"`
 
+	// Admin
+	AdminMail     string `envconfig:"ADMIN_MAIL" required:"true"`
+	AdminPassword string `envconfig:"ADMIN_PW" required:"true"`
+
 	// PostgreSQL
 	PostgresUser     string `envconfig:"PG_USER" required:"true"`
 	PostgresPassword string `envconfig:"PG_PW" required:"true"`
 	PostgresServer   string `envconfig:"PG_HOST" required:"true"`
 	PostgresPort     int    `envconfig:"PG_PORT" required:"true"`
 	PostgresDb       string `envconfig:"PG_DB" required:"true"`
+
+	// Access token
+	AccessTokenLifespan int    `envconfig:"ACCESS_TOKEN_LIFESPAN" required:"true"`
+	AccessTokenSecret   string `envconfig:"ACCESS_TOKEN_SECRET" required:"true"`
 }
 
 // Vrátí config.

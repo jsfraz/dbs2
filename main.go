@@ -1,6 +1,7 @@
 package main
 
 import (
+	"dbs2/database"
 	"dbs2/models"
 	"dbs2/routes"
 	"dbs2/utils"
@@ -53,6 +54,16 @@ func main() {
 	)
 	if err != nil {
 		log.Panicln(err)
+	}
+
+	// Kontrola admina
+	exists, _ := database.UserExistsByMail(singleton.Config.AdminMail)
+	if !exists {
+		u, err := models.NewUser("", "", singleton.Config.AdminMail, models.RoleAdmin, singleton.Config.AdminPassword)
+		err = database.CreateUser(*u)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	// HTTP server

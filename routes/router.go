@@ -36,7 +36,7 @@ func NewRouter() (*fizz.Fizz, error) {
 	fizz.Generator().SetServers([]*openapi.Server{
 		{
 			Description: utils.GetSingleton().Config.AppUrl,
-			URL:         fmt.Sprintf("%s/api/openapi.json", utils.GetSingleton().Config.AppUrl),
+			URL:         utils.GetSingleton().Config.AppUrl,
 		},
 	})
 
@@ -61,7 +61,8 @@ func NewRouter() (*fizz.Fizz, error) {
 		})
 	}
 
-	// TODO Ostatní routy
+	// Ostatní routy
+	AuthRoute(grp)
 
 	if len(fizz.Errors()) != 0 {
 		return nil, fmt.Errorf("errors: %v", fizz.Errors())
