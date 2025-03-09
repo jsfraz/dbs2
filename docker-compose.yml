@@ -8,7 +8,6 @@ services:
     image: postgres:17-alpine
     container_name: dbs2-postgres
     environment:
-      - POSTGRES_USER=${PG_USER}
       - POSTGRES_PASSWORD=${PG_PW}
       - POSTGRES_DB=${PG_DB}
     ports:
@@ -30,11 +29,16 @@ services:
       - GIN_MODE=${GIN_MODE}
       - APP_URL=${APP_URL}
       - SWAGGER=${SWAGGER}
+      - ADMIN_MAIL=${ADMIN_MAIL}
+      - ADMIN_PW=${ADMIN_PW}
+      - POSTGRES_USER=${PG_USER}
       - PG_USER=${PG_USER}
       - PG_PW=${PG_PW}
       - PG_HOST=${PG_HOST}
       - PG_PORT=${PG_PORT}
       - PG_DB=${PG_DB}
+      - ACCESS_TOKEN_LIFESPAN=${ACCESS_TOKEN_LIFESPAN}
+      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
 
 volumes:
   postgres_data:
