@@ -16,7 +16,7 @@ import (
 //	@return error
 func NewRouter() (*fizz.Fizz, error) {
 	// Instance Ginu
-	engine := gin.New()
+	engine := gin.Default()
 	// Defaultní cors config, Allow Origin, Authorization header
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
@@ -63,6 +63,10 @@ func NewRouter() (*fizz.Fizz, error) {
 				"url": fmt.Sprintf("%s/api/openapi.json", utils.GetSingleton().Config.AppUrl),
 			})
 		})
+		engine.GET("/", func(c *gin.Context) {
+			c.Redirect(301, fmt.Sprintf("%s/swagger", utils.GetSingleton().Config.AppUrl))
+		})
+
 	}
 
 	// Ostatní routy

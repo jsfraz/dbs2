@@ -3,7 +3,6 @@ package routes
 import (
 	"dbs2/handlers"
 	"dbs2/utils"
-	"net/http"
 
 	"github.com/loopfz/gadgeto/tonic"
 	"github.com/wI2L/fizz"
@@ -20,5 +19,12 @@ func AuthRoute(g *fizz.RouterGroup) {
 		utils.CreateOperationOption(
 			"Přihlášení",
 			false),
-		tonic.Handler(handlers.Login, http.StatusOK))
+		tonic.Handler(handlers.Login, 200))
+
+	// Registrace zákazníka
+	grp.POST("register",
+		utils.CreateOperationOption(
+			"Registrace zákazníka",
+			false),
+		tonic.Handler(handlers.Register, 200))
 }

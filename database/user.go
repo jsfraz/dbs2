@@ -37,7 +37,7 @@ func UserExistsByMail(mail string) (bool, error) {
 //
 //	@param user
 //	@return error
-func CreateUser(user models.User) error {
+func CreateUser(user *models.User) error {
 	err := utils.GetSingleton().PostgresDb.Create(&user).Error
 	if err != nil {
 		return err
@@ -71,4 +71,18 @@ func GetUserById(id uint) (*models.User, error) {
 		return nil, err
 	}
 	return &user, nil
+}
+
+// Vrátí všechny uživatele podle rolí.
+//
+//	@param roles
+//	@return *[]models.User
+//	@return error
+func GetUsersByRole(roles []models.Role) (*[]models.User, error) {
+	var users []models.User = []models.User{}
+	err := utils.GetSingleton().PostgresDb.Model(&models.User{}).Where("role in ?", roles).Find(&users).Error
+	if err != nil {
+		return nil, err
+	}
+	return &users, nil
 }

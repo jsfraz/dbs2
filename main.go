@@ -60,7 +60,10 @@ func main() {
 	exists, _ := database.UserExistsByMail(singleton.Config.AdminMail)
 	if !exists {
 		u, err := models.NewUser("", "", singleton.Config.AdminMail, models.RoleAdmin, singleton.Config.AdminPassword)
-		err = database.CreateUser(*u)
+		if err != nil {
+			log.Fatal(err)
+		}
+		err = database.CreateUser(u)
 		if err != nil {
 			log.Fatal(err)
 		}
