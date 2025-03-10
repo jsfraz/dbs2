@@ -25,9 +25,14 @@ func UserRoute(g *fizz.RouterGroup) {
 
 	// Routa pro management uživatelů
 	mgmtGrp := grp.Group("management", "User management", "Management uživatelů - operace pro admina.")
+
+	// Middleware povolující pouze admina
 	mgmtGrp.Use(func(c *gin.Context) {
 		middlewares.Role(c, []models.Role{models.RoleAdmin})
 	})
+
 	// Všichni uživatelé kteří nejsou zákaznící
 	mgmtGrp.GET("byRoles", utils.CreateOperationOption("Všichni uživatelé kteří nejsou zákaznící", true), tonic.Handler(handlers.GetUsersByRoles, 200))
+	// Vytvoření uživatele s rolí databaseManager nebo reviewApprover
+	mgmtGrp.POST("user", utils.CreateOperationOption("Vytvoření uživatele s rolí databaseManager nebo reviewApprover", true), tonic.Handler(handlers.CreateUser, 204))
 }

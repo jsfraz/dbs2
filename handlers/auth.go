@@ -50,7 +50,7 @@ func Login(c *gin.Context, login *models.Login) (*models.LoginResponse, error) {
 	return models.NewLoginResponse(accessToken), nil
 }
 
-// Registrace
+// Registrace zákazníka.
 //
 //	@param c
 //	@param request

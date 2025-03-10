@@ -37,3 +37,33 @@ func GetUsersByRoles(c *gin.Context, request *models.RolesRequest) (*[]models.Us
 	}
 	return users, nil
 }
+
+// Vytvoření uživatele.
+//
+//	@param c
+//	@param request
+//	@return error
+func CreateUser(c *gin.Context, request *models.CreateUser) error {
+	// Kontrola zda uživatel existuje
+	exists, err := database.UserExistsByMail(request.Mail)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	if exists {
+		c.AbortWithStatus(409)
+		return errors.New("uživatel s tímto e-mailem již existuje")
+	}
+	// Vytvoření uživatele
+	u, err := models.NewUser(request.FirstName, request.LastName, request.Mail, request.Role, request.Password)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	err = database.CreateUser(u)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	return nil
+}

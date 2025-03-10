@@ -66,7 +66,6 @@ func NewRouter() (*fizz.Fizz, error) {
 		engine.GET("/", func(c *gin.Context) {
 			c.Redirect(301, fmt.Sprintf("%s/swagger", utils.GetSingleton().Config.AppUrl))
 		})
-
 	}
 
 	// Ostatní routy
