@@ -86,3 +86,19 @@ func GetUsersByRole(roles []models.Role) (*[]models.User, error) {
 	}
 	return &users, nil
 }
+
+// Aktualizace uživatele.
+//
+//	@param user
+//	@return error
+func UpdateUser(user *models.User) error {
+	return utils.GetSingleton().PostgresDb.Save(user).Error
+}
+
+// Smazání uživatelů podle ID.
+//
+//	@param ids
+//	@return error
+func DeleteUsers(ids []uint) error {
+	return utils.GetSingleton().PostgresDb.Where("id IN ?", ids).Delete(&models.User{}).Error
+}

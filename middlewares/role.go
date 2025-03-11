@@ -22,10 +22,9 @@ func Role(c *gin.Context, roles []models.Role) {
 		return
 	}
 	// Kontrola role
-	user := u.(*models.User)
-	if !slices.Contains(roles, user.Role) {
+	if !slices.Contains(roles, u.(*models.User).Role) {
 		c.AbortWithStatus(401)
-		c.Error(fmt.Errorf("nesprávná uživatelská role: %s, vyžadováno jedno z: %s", user.Role, roles))
+		c.Error(fmt.Errorf("nesprávná uživatelská role: %s, vyžadováno jedno z: %s", u.(*models.User).Role, roles))
 		return
 	}
 	c.Next()

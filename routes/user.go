@@ -35,4 +35,8 @@ func UserRoute(g *fizz.RouterGroup) {
 	mgmtGrp.GET("byRoles", utils.CreateOperationOption("Všichni uživatelé kteří nejsou zákaznící", true), tonic.Handler(handlers.GetUsersByRoles, 200))
 	// Vytvoření uživatele s rolí databaseManager nebo reviewApprover
 	mgmtGrp.POST("user", utils.CreateOperationOption("Vytvoření uživatele s rolí databaseManager nebo reviewApprover", true), tonic.Handler(handlers.CreateUser, 204))
+	// Aktualizae uživatele
+	mgmtGrp.PATCH("user", utils.CreateOperationOption("Aktualizace uživatele.", true), tonic.Handler(handlers.UpdateUser, 204))
+	// Mazání uživatelů
+	mgmtGrp.DELETE("users", utils.CreateOperationOption("Mazání uživatelů.", true), tonic.Handler(handlers.DeleteUsers, 204))
 }

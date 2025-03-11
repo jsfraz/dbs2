@@ -4,6 +4,7 @@ import (
 	"dbs2/database"
 	"dbs2/models"
 	"errors"
+	"slices"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,8 +17,7 @@ import (
 func WhoAmI(c *gin.Context) (*models.User, error) {
 	u, _ := c.Get("user")
 	if u != nil {
-		user := u.(*models.User)
-		return user, nil
+		return u.(*models.User), nil
 	} else {
 		c.AbortWithStatus(500)
 		return nil, errors.New("žádný uživatel v kontextu")
@@ -61,6 +61,64 @@ func CreateUser(c *gin.Context, request *models.CreateUser) error {
 		return err
 	}
 	err = database.CreateUser(u)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	return nil
+}
+
+// Aktualizace uživatele.
+//
+//	@param c
+//	@param request
+//	@return error
+func UpdateUser(c *gin.Context, request *models.UpdateUser) error {
+	// Kontrola zda neupravuje sebe
+	u, _ := c.Get("user")
+	if u.(*models.User).ID == request.Id {
+		c.AbortWithStatus(401)
+		return errors.New("nelze editovat sebe")
+	}
+	// Kontrola zda existuje
+	exists, err := database.UserExistsById(request.Id)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	if !exists {
+		c.AbortWithStatus(404)
+		return errors.New("uživatel neexistuje")
+	}
+	// Aktualizace
+	user, err := database.GetUserById(request.Id)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	user.Update(request)
+	err = database.UpdateUser(user)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	return nil
+}
+
+// Mazání uživatelů
+//
+//	@param c
+//	@param request
+//	@return error
+func DeleteUsers(c *gin.Context, request *models.Ids) error {
+	// Kontrola zda nemaže sebe
+	u, _ := c.Get("user")
+	if slices.Contains(request.Ids, u.(*models.User).ID) {
+		c.AbortWithStatus(400)
+		return errors.New("nelze mazat sebe")
+	}
+	// Smazání
+	err := database.DeleteUsers(request.Ids)
 	if err != nil {
 		c.AbortWithStatus(500)
 		return err

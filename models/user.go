@@ -23,6 +23,15 @@ type User struct {
 	Addresses []Address `json:"-" gorm:"many2many:user_addresses;"`
 }
 
+// Vrátí nového uživatele.
+//
+//	@param firstName
+//	@param lastName
+//	@param mail
+//	@param role
+//	@param password
+//	@return *User
+//	@return error
 func NewUser(firstName, lastName, mail string, role Role, password string) (*User, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -39,4 +48,28 @@ func NewUser(firstName, lastName, mail string, role Role, password string) (*Use
 		Wishlist:     []Book{},
 		Addresses:    []Address{},
 	}, nil
+}
+
+// Aktualizace atributů uživatele.
+//
+//	@param uu
+//	@return error
+func (u *User) Update(uu *UpdateUser) error {
+	if uu.FirstName != nil {
+		u.FirstName = *uu.FirstName
+	}
+	if uu.LastName != nil {
+		u.LastName = *uu.LastName
+	}
+	if uu.Mail != nil {
+		u.Mail = *uu.Mail
+	}
+	if uu.Password != nil {
+		bytes, err := bcrypt.GenerateFromPassword([]byte(*uu.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return err
+		}
+		u.PasswordHash = base64.StdEncoding.EncodeToString(bytes)
+	}
+	return nil
 }
