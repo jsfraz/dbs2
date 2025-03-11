@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"dbs2/models"
 	"fmt"
 	"strings"
 	"time"
@@ -32,13 +33,13 @@ func GetUserIdFromToken(tokenStr string) (uint, error) {
 //	@param id
 //	@return string
 //	@return error
-func GenerateAccessToken(id uint) (string, error) {
+func GenerateAccessToken(user *models.User) (string, error) {
 	// token lifespan
 	// payload
 	now := time.Now()
 	claims := jwt.MapClaims{}
-	claims["sub"] = id
-	claims["type"] = "user"
+	claims["sub"] = user.ID
+	claims["type"] = user.Role
 	claims["exp"] = now.Add(time.Second * time.Duration(GetSingleton().Config.AccessTokenLifespan)).Unix()
 	claims["iat"] = now.Unix()
 	claims["nbf"] = now.Unix()

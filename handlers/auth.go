@@ -42,7 +42,7 @@ func Login(c *gin.Context, login *models.Login) (*models.LoginResponse, error) {
 		}
 	}
 	// Vygenerování tokenu
-	accessToken, err := utils.GenerateAccessToken(user.ID)
+	accessToken, err := utils.GenerateAccessToken(user)
 	if err != nil {
 		c.AbortWithStatus(500)
 		return nil, err
@@ -78,7 +78,7 @@ func Register(c *gin.Context, request *models.Register) (*models.LoginResponse, 
 		return nil, err
 	}
 	// Vygenerování tokenu
-	accessToken, err := utils.GenerateAccessToken(u.ID)
+	accessToken, err := utils.GenerateAccessToken(u)
 	if err != nil {
 		c.AbortWithStatus(500)
 		return nil, err
