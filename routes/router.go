@@ -72,6 +72,7 @@ func NewRouter() (*fizz.Fizz, error) {
 	AuthRoute(grp)
 	UserRoute(grp)
 	AuthorRoute(grp)
+	GenreRoute(grp)
 
 	if len(fizz.Errors()) != 0 {
 		return nil, fmt.Errorf("errors: %v", fizz.Errors())

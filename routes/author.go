@@ -11,7 +11,7 @@ import (
 	"github.com/wI2L/fizz"
 )
 
-// AuthorRoute
+// Routa as autory.
 //
 //	@param g
 func AuthorRoute(g *fizz.RouterGroup) {
