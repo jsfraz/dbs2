@@ -2,6 +2,8 @@
 
 Backend pro projekt pro KIKM/DBS2 a KIT/TNPW2.
 
+- [frontend projektu](https://github.com/DomDomiX/DBS2_Frontend)
+
 ## Požadavky
 
 - Docker
