@@ -32,7 +32,7 @@ type User struct {
 //	@param password
 //	@return *User
 //	@return error
-func NewUser(firstName, lastName, mail string, role Role, password string) (*User, error) {
+func NewUser(firstName string, lastName string, mail string, role Role, password string) (*User, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, err
