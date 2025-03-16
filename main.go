@@ -5,6 +5,7 @@ import (
 	"dbs2/models"
 	"dbs2/routes"
 	"dbs2/utils"
+	_ "embed"
 	"fmt"
 	"log"
 	"net/http"
@@ -14,6 +15,9 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
+
+//go:embed sql/reset_seq.sql
+var resetSeqSql string
 
 func main() {
 	// Nastavení logu
@@ -52,6 +56,12 @@ func main() {
 		&models.Order{},
 		&models.Discount{},
 	)
+	if err != nil {
+		log.Panicln(err)
+	}
+
+	// Reset sekvencí pro ID
+	err = postgres.Exec(resetSeqSql).Error
 	if err != nil {
 		log.Panicln(err)
 	}
