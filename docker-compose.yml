@@ -8,7 +8,7 @@ services:
     image: postgres:17-alpine
     container_name: dbs2-postgres
     environment:
-      - PG_USER=${PG_USER}
+      - POSTGRES_USER=${PG_USER}
       - POSTGRES_PASSWORD=${PG_PW}
       - POSTGRES_DB=${PG_DB}
     ports:
@@ -16,6 +16,19 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: always
+  
+#  dbs2-postgres2:
+#    image: postgres:17-alpine
+#    container_name: dbs2-postgres2
+#    environment:
+#      - POSTGRES_USER=${PG_USER}
+#      - POSTGRES_PASSWORD=${PG_PW}
+#      - POSTGRES_DB=${PG_DB}
+#    ports:
+#      - "10.8.0.1:5433:5432"
+#    volumes:
+#      - postgres_data2:/var/lib/postgresql/data
+#    restart: always
 
   dbs2:
     container_name: dbs2
@@ -43,3 +56,4 @@ services:
 
 volumes:
   postgres_data:
+  # postgres_data2:
