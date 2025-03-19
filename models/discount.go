@@ -8,6 +8,7 @@ type Discount struct {
 	Code       string
 	ValidUntil time.Time
 	Used       bool
+	Price      uint64
 
 	// Uživatel
 	User User

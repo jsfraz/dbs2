@@ -13,7 +13,7 @@ type Order struct {
 	// Knížky v objednávce
 	OrderedBooks Book `gorm:"many2many:user_order_books;"`
 	// (Ne)Použitá sleva
-	Discount Discount
+	Discount *Discount
 	// Adresa
 	Address Address
 }
