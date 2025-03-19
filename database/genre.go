@@ -29,3 +29,17 @@ func GetAllGenres() (*[]models.Genre, error) {
 	}
 	return &genres, nil
 }
+
+// Vrtí zda žánr exituje podle ID.
+//
+//	@param id
+//	@return bool
+//	@return error
+func GenreExistsById(id uint) (bool, error) {
+	var count int64
+	err := utils.GetSingleton().PostgresDb.Model(&models.Genre{}).Where("id = ?", id).Count(&count).Error
+	if err != nil {
+		return false, err
+	}
+	return count == 1, nil
+}

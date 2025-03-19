@@ -29,3 +29,17 @@ func GetAllAuthors() (*[]models.Author, error) {
 	}
 	return &authors, nil
 }
+
+// Vrátí zda autor existuje podle ID.
+//
+//	@param id
+//	@return bool
+//	@return error
+func AuthorExistsById(id uint) (bool, error) {
+	var count int64
+	err := utils.GetSingleton().PostgresDb.Model(&models.Author{}).Where("id = ?", id).Count(&count).Error
+	if err != nil {
+		return false, err
+	}
+	return count == 1, nil
+}

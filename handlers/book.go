@@ -1,0 +1,117 @@
+package handlers
+
+import (
+	"dbs2/database"
+	"dbs2/models"
+	"dbs2/utils"
+	"fmt"
+	"path/filepath"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
+
+// Vytvoření knihy.
+//
+//	@param c
+//	@param request
+//	@return error
+func CreateBook(c *gin.Context, request *models.CreateBook) (*models.Book, error) {
+	// Validace narození autora
+	date, err := utils.ParseISO8601String(request.Published)
+	if err != nil {
+		c.AbortWithStatus(400)
+		return nil, fmt.Errorf("chyba parsování datumu vydání: %s", err)
+	}
+	// Kontrola zda existuje autor
+	authorExists, err := database.AuthorExistsById(request.AuthorId)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return nil, err
+	}
+	if !authorExists {
+		c.AbortWithStatus(404)
+		return nil, fmt.Errorf("author s ID %d neexistuje", request.AuthorId)
+	}
+	// Kontrola zda kniha existuje podle ISBN
+	bookExists, err := database.BookExistsByIsbn(request.Isbn)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return nil, err
+	}
+	if bookExists {
+		c.AbortWithStatus(409)
+		return nil, fmt.Errorf("kniha s ISBN %s již existuje", request.Isbn)
+	}
+	// Kontrola zda žánry existují
+	for _, gId := range request.GenreIds {
+		genreExists, err := database.GenreExistsById(gId)
+		if err != nil {
+			c.AbortWithStatus(500)
+			return nil, err
+		}
+		if !genreExists {
+			c.AbortWithStatus(404)
+			return nil, fmt.Errorf("žánr s ID %d neexistuje", gId)
+		}
+	}
+	// Vytvoření knihy
+	book := models.NewBook(request.Name, request.AuthorId, request.Summary, request.Isbn, request.Price, *date, false)
+	err = database.CreateBook(book)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return nil, err
+	}
+	return book, nil
+}
+
+// nahrání obrázku knize.
+//
+//	@param c
+func UploadBookImage(c *gin.Context) {
+	// Získání souborů
+	form, err := c.MultipartForm()
+	if err != nil {
+		c.JSON(400, gin.H{"error": "chyba parsování formuláře"})
+		return
+	}
+	// ID knihy
+	bookIdStr := form.Value["bookId"][0]
+	bookId, _ := strconv.Atoi(bookIdStr)
+	// Kontrola zda kniha existuje
+	exists, err := database.BookExistsById(uint(bookId))
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	if !exists {
+		c.JSON(404, gin.H{"error": fmt.Sprintf("kniha s ID %d neexistuje", bookId)})
+		return
+	}
+	// Načtení knihy
+	book, err := database.GetBookById(uint(bookId))
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	// Přílohy
+	uploadedFile := form.File["image"][0]
+	// Kontrola formátu
+	if filepath.Ext(uploadedFile.Filename) != ".jpg" {
+		c.JSON(400, gin.H{"error": "jsou povoleny pouze .jpg oubrázky"})
+		return
+	}
+	// Uložení souboru
+	err = c.SaveUploadedFile(uploadedFile, fmt.Sprintf("./uploads/books/%d%s", bookId, filepath.Ext(uploadedFile.Filename)))
+	if err != nil {
+		c.JSON(500, gin.H{"error": "nepodařilo se uložit soubor"})
+		return
+	}
+	// Aktualizace knihy pokud neměla obrázek
+	if book.HasImage {
+		book.HasImage = true
+		// Zde nevracím error, musel by se ošetřovat obrázek
+		database.UpdateBook(book)
+	}
+	c.Status(200)
+}
