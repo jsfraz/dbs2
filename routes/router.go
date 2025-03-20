@@ -63,9 +63,11 @@ func NewRouter() (*fizz.Fizz, error) {
 				"url": fmt.Sprintf("%s/api/openapi.json", utils.GetSingleton().Config.AppUrl),
 			})
 		})
-		engine.GET("/", func(c *gin.Context) {
-			c.Redirect(301, fmt.Sprintf("%s/swagger", utils.GetSingleton().Config.AppUrl))
-		})
+		/*
+			engine.GET("/", func(c *gin.Context) {
+				c.Redirect(301, fmt.Sprintf("%s/swagger", utils.GetSingleton().Config.AppUrl))
+			})
+		*/
 	}
 
 	// Ostatní routy
