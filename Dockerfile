@@ -1,3 +1,4 @@
+#Úprava Dockerfile aby se nekopírovaly zdrojové kódy ale jen finální binárka
 FROM golang:1.24.0-alpine AS build
 
 WORKDIR /app
