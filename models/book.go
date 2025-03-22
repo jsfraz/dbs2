@@ -15,7 +15,7 @@ type Book struct {
 	// Žánry
 	Genres []Genre `gorm:"many2many:bookGenres;" json:"genres" validate:"required"`
 	// Autor
-	Author Author `json:"authors" validate:"required"`
+	Author Author `json:"author" validate:"required"`
 }
 
 // Vrátí novou knihu.

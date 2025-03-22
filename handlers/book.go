@@ -5,6 +5,7 @@ import (
 	"dbs2/models"
 	"dbs2/utils"
 	"fmt"
+	"os"
 	"path/filepath"
 	"strconv"
 
@@ -65,7 +66,7 @@ func CreateBook(c *gin.Context, request *models.CreateBook) (*models.Book, error
 	return book, nil
 }
 
-// nahrání obrázku knize.
+// Nahrání obrázku knize.
 //
 //	@param c
 func UploadBookImage(c *gin.Context) {
@@ -110,8 +111,65 @@ func UploadBookImage(c *gin.Context) {
 	// Aktualizace knihy pokud neměla obrázek
 	if book.HasImage {
 		book.HasImage = true
-		// Zde nevracím error, musel by se ošetřovat obrázek
+		// Zde se nevracím error, musel by se ošetřovat obrázek
 		database.UpdateBook(book)
 	}
 	c.Status(200)
+}
+
+// Vrátí všechny knihy.
+//
+//	@param c
+//	@return *[]models.Book
+//	@return error
+func GetAllBooks(c *gin.Context) (*[]models.Book, error) {
+	books, err := database.GetAllBooks()
+	if err != nil {
+		c.AbortWithStatus(500)
+		return nil, err
+	}
+	return books, nil
+}
+
+// Vrátí obrázek knihy.
+//
+//	@param c
+func GetBookImage(c *gin.Context) {
+	id := c.Param("id")
+	bookId, _ := strconv.Atoi(id)
+	// Kontrola zda kniha existuje
+	exists, err := database.BookExistsById(uint(bookId))
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	if !exists {
+		c.JSON(404, gin.H{"error": fmt.Sprintf("kniha s ID %d neexistuje", bookId)})
+		return
+	}
+	// Kontrola zda má kniha obrázek
+	book, err := database.GetBookById(uint(bookId))
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	if !book.HasImage {
+		// Nastavení content-type
+		c.Header("Content-Type", "image/jpeg")
+		// Odeslání souboru
+		c.File("./static/images/book_404.jpg")
+		return
+	}
+	// Cesta k adresáři s obrázky
+	imagePath := filepath.Join(fmt.Sprintf("./uploads/books/%s.jpg", id))
+	// Kontrola existence souboru
+	_, err = os.Stat(imagePath)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	// Nastavení content-type
+	c.Header("Content-Type", "image/jpeg")
+	// Odeslání souboru
+	c.File(imagePath)
 }

@@ -17,12 +17,16 @@ import (
 func BookRoute(g *fizz.RouterGroup) {
 	grp := g.Group("book", "Book", "Knihy")
 
-	// Autentifikační middleware
-	grp.Use(middlewares.Auth)
+	// Všechny knihy
+	grp.GET("all", utils.CreateOperationOption("Všechny knihy", true), tonic.Handler(handlers.GetAllBooks, 200))
+	// Obrázek knihy
+	grp.GinRouterGroup().GET("/image/:id", handlers.GetBookImage)
 
 	// Routa pro management knih
 	mgmtGrp := grp.Group("management", "Book management", "Management knih - operace pro admina.")
 
+	// Autentifikační middleware
+	mgmtGrp.Use(middlewares.Auth)
 	// Middleware povolující pouze admina
 	mgmtGrp.Use(func(c *gin.Context) {
 		middlewares.Role(c, []models.Role{models.RoleAdmin})

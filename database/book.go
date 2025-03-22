@@ -66,3 +66,16 @@ func GetBookById(id uint) (*models.Book, error) {
 func UpdateBook(book *models.Book) error {
 	return utils.GetSingleton().PostgresDb.Save(book).Error
 }
+
+// Vrátí všechny knihy i s autory a žánry.
+//
+//	@return *[]models.Book
+//	@return error
+func GetAllBooks() (*[]models.Book, error) {
+	var books []models.Book = []models.Book{}
+	err := utils.GetSingleton().PostgresDb.Model(&models.Book{}).Preload("Genres").Preload("Author").Find(&books).Error
+	if err != nil {
+		return nil, err
+	}
+	return &books, nil
+}
