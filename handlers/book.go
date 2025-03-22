@@ -144,7 +144,10 @@ func GetBookImage(c *gin.Context) {
 		return
 	}
 	if !exists {
-		c.JSON(404, gin.H{"error": fmt.Sprintf("kniha s ID %d neexistuje", bookId)})
+		// Nastavení content-type
+		c.Header("Content-Type", "image/jpeg")
+		// Odeslání souboru
+		c.File("./static/images/book_404.jpg")
 		return
 	}
 	// Kontrola zda má kniha obrázek
@@ -165,7 +168,10 @@ func GetBookImage(c *gin.Context) {
 	// Kontrola existence souboru
 	_, err = os.Stat(imagePath)
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		// Nastavení content-type
+		c.Header("Content-Type", "image/jpeg")
+		// Odeslání souboru
+		c.File("./static/images/book_404.jpg")
 		return
 	}
 	// Nastavení content-type
