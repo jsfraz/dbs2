@@ -76,6 +76,7 @@ func NewRouter() (*fizz.Fizz, error) {
 	AuthorRoute(grp)
 	GenreRoute(grp)
 	BookRoute(grp)
+	CartRoute(grp)
 
 	if len(fizz.Errors()) != 0 {
 		return nil, fmt.Errorf("errors: %v", fizz.Errors())

@@ -23,6 +23,8 @@ func BookRoute(g *fizz.RouterGroup) {
 	grp.GinRouterGroup().GET("/image/:id", handlers.GetBookImage)
 	// Vyhledávání knih
 	grp.GET("search", utils.CreateOperationOption("Vyhledávání knih", true), tonic.Handler(handlers.SearchBooks, 200))
+	// Vrátí knihu podle ID
+	grp.GET("", utils.CreateOperationOption("Vrátí knihu podle ID", true), tonic.Handler(handlers.GetBookById, 200))
 
 	// Routa pro management knih
 	mgmtGrp := grp.Group("management", "Book management", "Management knih - operace pro admina.")

@@ -4,6 +4,7 @@ import (
 	"dbs2/database"
 	"dbs2/models"
 	"dbs2/utils"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -196,4 +197,40 @@ func SearchBooks(c *gin.Context, request *models.SearchBooks) (*[]models.Book, e
 		return nil, err
 	}
 	return books, nil
+}
+
+// Vrátí knihu podle ID.
+//
+//	@param c
+//	@param request
+//	@return *models.Book
+//	@return error
+func GetBookById(c *gin.Context, request *models.Id) (*models.Book, error) {
+	book, err := database.GetBookById(request.Id)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return nil, err
+	}
+	return book, nil
+}
+
+// Vrátí true nebo false podle toho, zda je kniha v košíku.
+//
+//	@param c
+//	@param request
+//	@return *models.TrueFalse
+//	@return error
+func IsBookInCart(c *gin.Context, request *models.Id) (*models.TrueFalse, error) {
+	// Načtení uživatele
+	u, exists := c.Get("user")
+	if !exists {
+		c.AbortWithStatus(500)
+		return nil, errors.New("uživatel není v kontextu")
+	}
+	bookInCart, err := database.BookInCart(request.Id, u.(*models.User).ID)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return nil, err
+	}
+	return models.NewTrueFalse(bookInCart), nil
 }
