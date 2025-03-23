@@ -17,14 +17,14 @@ import (
 func AuthorRoute(g *fizz.RouterGroup) {
 	grp := g.Group("author", "Author", "Autoři")
 
-	// Autentifikační middleware
-	grp.Use(middlewares.Auth)
-
 	// Všichni autoři
-	grp.POST("all", utils.CreateOperationOption("Všichni autoři", true), tonic.Handler(handlers.GetAllAuthors, 200))
+	grp.GET("all", utils.CreateOperationOption("Všichni autoři", true), tonic.Handler(handlers.GetAllAuthors, 200))
 
 	// Routa pro management autorů
 	mgmtGrp := grp.Group("management", "Author management", "Management autorů - operace pro admina.")
+
+	// Autentifikační middleware
+	mgmtGrp.Use(middlewares.Auth)
 
 	// Middleware povolující pouze admina
 	mgmtGrp.Use(func(c *gin.Context) {

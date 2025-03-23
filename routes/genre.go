@@ -17,14 +17,14 @@ import (
 func GenreRoute(g *fizz.RouterGroup) {
 	grp := g.Group("genre", "Genre", "Žánry")
 
-	// Autentifikační middleware
-	grp.Use(middlewares.Auth)
-
 	// Všechny žánry
 	grp.POST("all", utils.CreateOperationOption("Všechny žánry", true), tonic.Handler(handlers.GetAllGenres, 200))
 
 	// Routa pro management žánrů
 	mgmtGrp := grp.Group("management", "Genre management", "Management žánrů - operace pro admina.")
+
+	// Autentifikační middleware
+	mgmtGrp.Use(middlewares.Auth)
 
 	// Middleware povolující pouze admina
 	mgmtGrp.Use(func(c *gin.Context) {
