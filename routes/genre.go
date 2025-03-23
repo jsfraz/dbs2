@@ -18,7 +18,7 @@ func GenreRoute(g *fizz.RouterGroup) {
 	grp := g.Group("genre", "Genre", "Žánry")
 
 	// Všechny žánry
-	grp.POST("all", utils.CreateOperationOption("Všechny žánry", true), tonic.Handler(handlers.GetAllGenres, 200))
+	grp.GET("all", utils.CreateOperationOption("Všechny žánry", true), tonic.Handler(handlers.GetAllGenres, 200))
 
 	// Routa pro management žánrů
 	mgmtGrp := grp.Group("management", "Genre management", "Management žánrů - operace pro admina.")
