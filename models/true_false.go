@@ -1,7 +1,7 @@
 package models
 
 type TrueFalse struct {
-	Value bool `json:"value" required:"true"`
+	Value bool `json:"value" validate:"required"`
 }
 
 // Vrátí nový objekt TrueFalse.
