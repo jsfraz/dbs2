@@ -79,3 +79,27 @@ func GetAllBooks() (*[]models.Book, error) {
 	}
 	return &books, nil
 }
+
+// Vyhledávání knih podle různých kritérií.
+//
+//	@param searchBooks
+//	@return *[]models.Book
+//	@return error
+func SearchBooks(searchBooks *models.SearchBooks) (*[]models.Book, error) {
+	var books []models.Book = []models.Book{}
+	tx := utils.GetSingleton().PostgresDb.Model(&models.Book{}).Preload("Genres").Preload("Author")
+	if searchBooks.Name != nil {
+		tx = tx.Where("name LIKE ?", "%"+*searchBooks.Name+"%")
+	}
+	if searchBooks.AuthorIds != nil {
+		tx = tx.Where("author_id IN ?", *searchBooks.AuthorIds)
+	}
+	if searchBooks.GenreIds != nil {
+		tx = tx.Where("genre_id IN ?", *searchBooks.GenreIds)
+	}
+	err := tx.Where("price >= ? AND price <= ?", searchBooks.MinPrice, searchBooks.MaxPrice).Find(&books).Error
+	if err != nil {
+		return nil, err
+	}
+	return &books, nil
+}

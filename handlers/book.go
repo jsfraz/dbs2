@@ -179,3 +179,21 @@ func GetBookImage(c *gin.Context) {
 	// Odeslání souboru
 	c.File(imagePath)
 }
+
+// Vyhledávání knih podle různých kritérií.
+//
+//	@param c
+//	@return *[]models.Book
+//	@return error
+func SearchBooks(c *gin.Context, request *models.SearchBooks) (*[]models.Book, error) {
+	if err := request.Validate(); err != nil {
+		c.AbortWithStatus(400)
+		return nil, err
+	}
+	books, err := database.SearchBooks(request)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return nil, err
+	}
+	return books, nil
+}
