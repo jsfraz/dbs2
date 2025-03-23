@@ -95,7 +95,8 @@ func SearchBooks(searchBooks *models.SearchBooks) (*[]models.Book, error) {
 		tx = tx.Where("author_id IN ?", *searchBooks.AuthorIds)
 	}
 	if searchBooks.GenreIds != nil {
-		tx = tx.Where("genre_id IN ?", *searchBooks.GenreIds)
+		tx = tx.Joins("JOIN book_genres ON books.id = book_genres.book_id").
+			Where("book_genres.genre_id IN ?", *searchBooks.GenreIds)
 	}
 	err := tx.Where("price >= ? AND price <= ?", searchBooks.MinPrice, searchBooks.MaxPrice).Find(&books).Error
 	if err != nil {
