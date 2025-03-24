@@ -28,7 +28,7 @@ type Book struct {
 //	@param published
 //	@param hasImage
 //	@return *Book
-func NewBook(name string, authorId uint, summary string, isbn string, price uint64, published time.Time, hasImage bool) *Book {
+func NewBook(name string, authorId uint, summary string, isbn string, price uint64, published time.Time, hasImage bool, genres []Genre) *Book {
 	return &Book{
 		Name:      name,
 		AuthorID:  authorId,
@@ -37,5 +37,6 @@ func NewBook(name string, authorId uint, summary string, isbn string, price uint
 		Price:     price,
 		Published: published,
 		HasImage:  hasImage,
+		Genres:    genres,
 	}
 }

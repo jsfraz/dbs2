@@ -43,3 +43,17 @@ func GenreExistsById(id uint) (bool, error) {
 	}
 	return count == 1, nil
 }
+
+// Vrátí žánry podle ID.
+//
+//	@param ids
+//	@return *[]models.Genre
+//	@return error
+func GetGenresByIds(ids []uint) (*[]models.Genre, error) {
+	var genres []models.Genre = []models.Genre{}
+	err := utils.GetSingleton().PostgresDb.Model(&models.Genre{}).Where("id IN ?", ids).Find(&genres).Error
+	if err != nil {
+		return nil, err
+	}
+	return &genres, nil
+}

@@ -57,8 +57,13 @@ func CreateBook(c *gin.Context, request *models.CreateBook) (*models.Book, error
 			return nil, fmt.Errorf("žánr s ID %d neexistuje", gId)
 		}
 	}
+	genres, err := database.GetGenresByIds(request.GenreIds)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return nil, err
+	}
 	// Vytvoření knihy
-	book := models.NewBook(request.Name, request.AuthorId, request.Summary, request.Isbn, request.Price, *date, false)
+	book := models.NewBook(request.Name, request.AuthorId, request.Summary, request.Isbn, request.Price, *date, false, *genres)
 	err = database.CreateBook(book)
 	if err != nil {
 		c.AbortWithStatus(500)
@@ -233,4 +238,65 @@ func IsBookInCart(c *gin.Context, request *models.Id) (*models.TrueFalse, error)
 		return nil, err
 	}
 	return models.NewTrueFalse(bookInCart), nil
+}
+
+// Aktualizace knihy.
+//
+//	@param c
+//	@param request
+//	@return error
+func UpdateBook(c *gin.Context, request *models.UpdateBook) error {
+	// Validace narození autora
+	date, err := utils.ParseISO8601String(request.Published)
+	if err != nil {
+		c.AbortWithStatus(400)
+		return fmt.Errorf("chyba parsování datumu vydání: %s", err)
+	}
+	// Kontrola zda existuje autor
+	authorExists, err := database.AuthorExistsById(request.AuthorId)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	if !authorExists {
+		c.AbortWithStatus(404)
+		return fmt.Errorf("author s ID %d neexistuje", request.AuthorId)
+	}
+	// Kontrola zda existují žánry
+	for _, gId := range request.GenreIds {
+		genreExists, err := database.GenreExistsById(gId)
+		if err != nil {
+			c.AbortWithStatus(500)
+			return err
+		}
+		if !genreExists {
+			c.AbortWithStatus(404)
+			return fmt.Errorf("žánr s ID %d neexistuje", gId)
+		}
+	}
+	// Žánry
+	genres, err := database.GetGenresByIds(request.GenreIds)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	// Aktualizace
+	book, err := database.GetBookById(request.Id)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	book.Name = request.Name
+	book.AuthorID = request.AuthorId
+	book.Summary = request.Summary
+	book.Isbn = request.Isbn
+	book.Price = request.Price
+	book.Published = *date
+	book.Genres = *genres
+	err = database.UpdateBook(book)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	return nil
 }

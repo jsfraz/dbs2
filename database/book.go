@@ -59,12 +59,27 @@ func GetBookById(id uint) (*models.Book, error) {
 	return &book, nil
 }
 
-// Aktualizace knihy.
+// Aktualizace knihy včetně žánrů a autora.
 //
 //	@param book
 //	@return error
 func UpdateBook(book *models.Book) error {
-	return utils.GetSingleton().PostgresDb.Save(book).Error
+	// Uložení knihy a aktualizace žánrů
+	err := utils.GetSingleton().PostgresDb.Save(book).Error
+	if err != nil {
+		return err
+	}
+	// Aktualizace žánrů
+	err = utils.GetSingleton().PostgresDb.Model(book).Association("Genres").Replace(book.Genres)
+	if err != nil {
+		return err
+	}
+	// Aktualizace autora
+	err = utils.GetSingleton().PostgresDb.Model(book).Update("author_id", book.AuthorID).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // Vrátí všechny knihy i s autory a žánry.

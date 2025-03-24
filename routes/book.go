@@ -38,6 +38,8 @@ func BookRoute(g *fizz.RouterGroup) {
 
 	// Vytvoření nové knihy
 	mgmtGrp.POST("book", utils.CreateOperationOption("Vytvoření knihy", true), tonic.Handler(handlers.CreateBook, 200))
+	// Aktualizace knihy
+	mgmtGrp.PATCH("book", utils.CreateOperationOption("Aktualizace knihy", true), tonic.Handler(handlers.UpdateBook, 204))
 	// Nahrání obrázku knihy
 	mgmtGrp.GinRouterGroup().POST("bookImage", handlers.UploadBookImage)
 }
