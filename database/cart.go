@@ -29,7 +29,7 @@ func RemoveBookFromCart(bookId uint, userId uint) error {
 //	@param userId
 //	@return bool
 //	@return error
-func BookInCart(bookId uint, userId uint) (bool, error) {
+func IsBookInCart(bookId uint, userId uint) (bool, error) {
 	var count int64
 	err := utils.GetSingleton().PostgresDb.Table("carts").
 		Where("user_id = ? AND book_id = ?", userId, bookId).

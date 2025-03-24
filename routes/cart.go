@@ -11,7 +11,7 @@ import (
 	"github.com/wI2L/fizz"
 )
 
-// Routa knih.
+// Routa košíku.
 //
 //	@param g
 func CartRoute(g *fizz.RouterGroup) {

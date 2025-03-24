@@ -9,30 +9,30 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Přidá knihu do košíku.
+// Přidá knihu do wishlistu.
 //
 //	@param c
 //	@param request
 //	@return error
-func AddBookToCart(c *gin.Context, request *models.Id) error {
+func AddBookToWishlist(c *gin.Context, request *models.Id) error {
 	// Načtení uživatele
 	u, exists := c.Get("user")
 	if !exists {
 		c.AbortWithStatus(500)
 		return errors.New("uživatel není v kontextu")
 	}
-	// Kontrola zda už je knniha v košíku
-	bookInCart, err := database.IsBookInCart(request.Id, u.(*models.User).ID)
+	// Kontrola zda už je knniha v wishlistu
+	bookInWishlist, err := database.IsBookInWishlist(request.Id, u.(*models.User).ID)
 	if err != nil {
 		c.AbortWithStatus(500)
 		return err
 	}
-	if bookInCart {
+	if bookInWishlist {
 		c.AbortWithStatus(409)
-		return fmt.Errorf("kniha s ID %d již je v košíku", request.Id)
+		return fmt.Errorf("kniha s ID %d již je v wishlistu", request.Id)
 	}
-	// Přidání do košíku
-	err = database.AddBookToCart(request.Id, u.(*models.User))
+	// Přidání do wishlistu
+	err = database.AddBookToWishlist(request.Id, u.(*models.User))
 	if err != nil {
 		c.AbortWithStatus(500)
 		return err
@@ -40,30 +40,30 @@ func AddBookToCart(c *gin.Context, request *models.Id) error {
 	return nil
 }
 
-// Odstraní knihu z košíku.
+// Odstraní knihu z wishlistu.
 //
 //	@param c
 //	@param request
 //	@return error
-func RemoveBookFromCart(c *gin.Context, request *models.Id) error {
+func RemoveBookFromWishlist(c *gin.Context, request *models.Id) error {
 	// Načtení uživatele
 	u, exists := c.Get("user")
 	if !exists {
 		c.AbortWithStatus(500)
 		return errors.New("uživatel není v kontextu")
 	}
-	// Kontrola zda už je knniha v košíku
-	bookInCart, err := database.IsBookInCart(request.Id, u.(*models.User).ID)
+	// Kontrola zda už je knniha v wishlistu
+	bookInWishlist, err := database.IsBookInWishlist(request.Id, u.(*models.User).ID)
 	if err != nil {
 		c.AbortWithStatus(500)
 		return err
 	}
-	if !bookInCart {
+	if !bookInWishlist {
 		c.AbortWithStatus(404)
-		return fmt.Errorf("kniha s ID %d není v košíku", request.Id)
+		return fmt.Errorf("kniha s ID %d není v wishlistu", request.Id)
 	}
-	// Odstranění knihy z košíku
-	err = database.RemoveBookFromCart(request.Id, u.(*models.User).ID)
+	// Odstranění knihy z wishlistu
+	err = database.RemoveBookFromWishlist(request.Id, u.(*models.User).ID)
 	if err != nil {
 		c.AbortWithStatus(500)
 		return err
@@ -71,21 +71,21 @@ func RemoveBookFromCart(c *gin.Context, request *models.Id) error {
 	return nil
 }
 
-// Vrátí všechny knihy v košíku.
+// Vrátí všechny knihy v wishlistu.
 //
 //	@param c
 //	@param request
 //	@return *[]models.Book
 //	@return error
-func GetAllBooksInCart(c *gin.Context) (*[]models.Book, error) {
+func GetAllBooksInWishlist(c *gin.Context) (*[]models.Book, error) {
 	// Načtení uživatele
 	u, exists := c.Get("user")
 	if !exists {
 		c.AbortWithStatus(500)
 		return nil, errors.New("uživatel není v kontextu")
 	}
-	// Vrácení všech knih v košíku
-	books, err := database.GetAllBooksInCart(u.(*models.User).ID)
+	// Vrácení všech knih v wishlistu
+	books, err := database.GetAllBooksInWishlist(u.(*models.User).ID)
 	if err != nil {
 		c.AbortWithStatus(500)
 		return nil, err

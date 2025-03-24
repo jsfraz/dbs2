@@ -52,7 +52,7 @@ func BookExistsById(id uint) (bool, error) {
 //	@return error
 func GetBookById(id uint) (*models.Book, error) {
 	var book models.Book
-	err := utils.GetSingleton().PostgresDb.Model(&models.Book{}).Where("id = ?", id).First(&book).Error
+	err := utils.GetSingleton().PostgresDb.Model(&models.Book{}).Preload("Genres").Preload("Author").Where("id = ?", id).First(&book).Error
 	if err != nil {
 		return nil, err
 	}

@@ -232,7 +232,7 @@ func IsBookInCart(c *gin.Context, request *models.Id) (*models.TrueFalse, error)
 		c.AbortWithStatus(500)
 		return nil, errors.New("uživatel není v kontextu")
 	}
-	bookInCart, err := database.BookInCart(request.Id, u.(*models.User).ID)
+	bookInCart, err := database.IsBookInCart(request.Id, u.(*models.User).ID)
 	if err != nil {
 		c.AbortWithStatus(500)
 		return nil, err
@@ -299,4 +299,25 @@ func UpdateBook(c *gin.Context, request *models.UpdateBook) error {
 		return err
 	}
 	return nil
+}
+
+// Vrátí true nebo false podle toho, zda je kniha v seznamu přání.
+//
+//	@param c
+//	@param request
+//	@return *models.TrueFalse
+//	@return error
+func IsBookInWishlist(c *gin.Context, request *models.Id) (*models.TrueFalse, error) {
+	// Načtení uživatele
+	u, exists := c.Get("user")
+	if !exists {
+		c.AbortWithStatus(500)
+		return nil, errors.New("uživatel není v kontextu")
+	}
+	bookInWishlist, err := database.IsBookInWishlist(request.Id, u.(*models.User).ID)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return nil, err
+	}
+	return models.NewTrueFalse(bookInWishlist), nil
 }
