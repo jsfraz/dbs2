@@ -42,4 +42,6 @@ func BookRoute(g *fizz.RouterGroup) {
 	mgmtGrp.PATCH("book", utils.CreateOperationOption("Aktualizace knihy", true), tonic.Handler(handlers.UpdateBook, 204))
 	// Nahrání obrázku knihy
 	mgmtGrp.GinRouterGroup().POST("bookImage", handlers.UploadBookImage)
+	// Odstranění obrázku knihy
+	mgmtGrp.DELETE("bookImage", utils.CreateOperationOption("Odstranění obrázku knihy", true), tonic.Handler(handlers.DeleteBookImage, 204))
 }

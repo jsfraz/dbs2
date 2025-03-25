@@ -321,3 +321,32 @@ func IsBookInWishlist(c *gin.Context, request *models.Id) (*models.TrueFalse, er
 	}
 	return models.NewTrueFalse(bookInWishlist), nil
 }
+
+// Odstraní obrázek knihy.
+//
+//	@param c
+//	@param request
+//	@return error
+func DeleteBookImage(c *gin.Context, request *models.Id) error {
+	book, err := database.GetBookById(request.Id)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	if !book.HasImage {
+		c.AbortWithStatus(404)
+		return fmt.Errorf("kniha s ID %d nemá obrázek", request.Id)
+	}
+	err = os.Remove(fmt.Sprintf("./uploads/books/%d.jpg", request.Id))
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	book.HasImage = false
+	err = database.UpdateBook(book)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	return nil
+}
