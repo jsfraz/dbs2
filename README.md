@@ -32,3 +32,7 @@ sudo docker compose up -d --build
 ## Swagger UI (pokud povoleno)
 
 <https://dbs2-backend.josefraz.cz/swagger>
+
+## Databázové schéma
+
+![Databázové schéma](dbs2%20-%20public.png)
