@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type Order struct {
 	ID         uint
 	UserID     uint
@@ -7,6 +9,7 @@ type Order struct {
 	Status     string
 	AddressID  uint
 	DiscountID *uint
+	CreatedAt  time.Time
 
 	// Uživatel
 	User User // TODO skrýt ve JSONu
