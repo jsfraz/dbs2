@@ -115,7 +115,7 @@ func UploadBookImage(c *gin.Context) {
 		return
 	}
 	// Aktualizace knihy pokud neměla obrázek
-	if book.HasImage {
+	if !book.HasImage {
 		book.HasImage = true
 		// Zde se nevracím error, musel by se ošetřovat obrázek
 		database.UpdateBook(book)
