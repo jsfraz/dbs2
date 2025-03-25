@@ -88,7 +88,7 @@ func UpdateBook(book *models.Book) error {
 //	@return error
 func GetAllBooks() (*[]models.Book, error) {
 	var books []models.Book = []models.Book{}
-	err := utils.GetSingleton().PostgresDb.Model(&models.Book{}).Preload("Genres").Preload("Author").Find(&books).Error
+	err := utils.GetSingleton().PostgresDb.Model(&models.Book{}).Preload("Genres").Preload("Author").Order("id ASC").Find(&books).Error
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +113,7 @@ func SearchBooks(searchBooks *models.SearchBooks) (*[]models.Book, error) {
 		tx = tx.Joins("JOIN book_genres ON books.id = book_genres.book_id").
 			Where("book_genres.genre_id IN ?", *searchBooks.GenreIds)
 	}
-	err := tx.Where("price >= ? AND price <= ?", searchBooks.MinPrice, searchBooks.MaxPrice).Find(&books).Error
+	err := tx.Where("price >= ? AND price <= ?", searchBooks.MinPrice, searchBooks.MaxPrice).Order("id ASC").Find(&books).Error
 	if err != nil {
 		return nil, err
 	}
