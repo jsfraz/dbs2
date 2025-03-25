@@ -3,14 +3,15 @@ package models
 import "time"
 
 type Book struct {
-	ID        uint      `json:"id" validate:"required"`
-	Name      string    `json:"name" validate:"required"`
-	AuthorID  uint      `json:"-"`
-	Summary   string    `json:"summary" validate:"required"`
-	Isbn      string    `json:"isbn" validate:"required"`
-	Price     uint64    `json:"price" validate:"required"`
-	Published time.Time `json:"published" validate:"required"`
-	HasImage  bool      `json:"hasImage" validate:"required"`
+	ID            uint      `json:"id" validate:"required"`
+	Name          string    `json:"name" validate:"required"`
+	AuthorID      uint      `json:"-"`
+	Summary       string    `json:"summary" validate:"required"`
+	Isbn          string    `json:"isbn" validate:"required"`
+	Price         uint64    `json:"price" validate:"required"`
+	Published     time.Time `json:"published" validate:"required"`
+	HasImage      bool      `json:"hasImage" validate:"required"`
+	AverageRating float64   `json:"averageRating" validate:"required"`
 
 	// Žánry
 	Genres []Genre `gorm:"many2many:bookGenres;" json:"genres" validate:"required"`

@@ -1,3 +1,5 @@
+-- Reset sekvencí pro ID záznamů v tabulkách
+-- Při manuálním přidání záznamů pomocí DBeaveru občas nefungovala sekvence správně
 SELECT setval('addresses_id_seq', (SELECT MAX(id) FROM addresses));
 SELECT setval('authors_id_seq', (SELECT MAX(id) FROM authors));
 SELECT setval('books_id_seq', (SELECT MAX(id) FROM books));

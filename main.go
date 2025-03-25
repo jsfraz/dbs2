@@ -5,19 +5,16 @@ import (
 	"dbs2/models"
 	"dbs2/routes"
 	"dbs2/utils"
-	_ "embed"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
-
-//go:embed sql/reset_seq.sql
-var resetSeqSql string
 
 func main() {
 	// Nastavení logu
@@ -60,10 +57,20 @@ func main() {
 		log.Panicln(err)
 	}
 
-	// Reset sekvencí pro ID
-	err = postgres.Exec(resetSeqSql).Error
+	// Spuštění všech skriptů ze složky sql/
+	files, err := filepath.Glob("sql/*.sql")
 	if err != nil {
 		log.Panicln(err)
+	}
+	for _, file := range files {
+		sql, err := os.ReadFile(file)
+		if err != nil {
+			log.Panicln(err)
+		}
+		err = postgres.Exec(string(sql)).Error
+		if err != nil {
+			log.Panicln(err)
+		}
 	}
 
 	// Kontrola admina
