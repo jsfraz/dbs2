@@ -42,6 +42,13 @@ services:
       - PG_DB=${PG_DB}
       - ACCESS_TOKEN_LIFESPAN=${ACCESS_TOKEN_LIFESPAN}
       - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+    
+  dbs2-mega-backuper:
+    image: ghcr.io/jsfraz/mega-backuper:latest
+    container_name: dbs2-mega-backuper
+    restart: always
+    volumes:
+      - ./backuper.json:/app/backuper.json
 
 volumes:
   postgres_data:
