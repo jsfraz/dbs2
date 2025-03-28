@@ -47,6 +47,8 @@ services:
     image: ghcr.io/jsfraz/mega-backuper:latest
     container_name: dbs2-mega-backuper
     restart: always
+    depends_on:
+      - dbs2
     volumes:
       - ./backuper.json:/app/backuper.json
       - dbs2_uploads:/tmp/uploads

@@ -1,3 +1,3 @@
 # README
 
-Do tohoto adresáře se ukládají uplaodnutzé soubory.
+Do tohoto adresáře se ukládají uplaodnuté soubory.
