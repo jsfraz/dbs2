@@ -49,6 +49,7 @@ services:
     restart: always
     volumes:
       - ./backuper.json:/app/backuper.json
+      - dbs2_uploads:/tmp/uploads
 
 volumes:
   postgres_data:
