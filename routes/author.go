@@ -11,7 +11,7 @@ import (
 	"github.com/wI2L/fizz"
 )
 
-// Routa as autory.
+// Routa pro autory.
 //
 //	@param g
 func AuthorRoute(g *fizz.RouterGroup) {
@@ -21,14 +21,14 @@ func AuthorRoute(g *fizz.RouterGroup) {
 	grp.GET("all", utils.CreateOperationOption("Všichni autoři", true), tonic.Handler(handlers.GetAllAuthors, 200))
 
 	// Routa pro management autorů
-	mgmtGrp := grp.Group("management", "Author management", "Management autorů - operace pro admina.")
+	mgmtGrp := grp.Group("management", "Author management", "Management autorů - operace pro admina a database managera.")
 
 	// Autentifikační middleware
 	mgmtGrp.Use(middlewares.Auth)
 
-	// Middleware povolující pouze admina
+	// Middleware povolující pouze admina a database managera
 	mgmtGrp.Use(func(c *gin.Context) {
-		middlewares.Role(c, []models.Role{models.RoleAdmin})
+		middlewares.Role(c, []models.Role{models.RoleAdmin, models.RoleDbManager})
 	})
 
 	// Vytvoření autora

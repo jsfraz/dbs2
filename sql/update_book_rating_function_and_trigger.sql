@@ -8,7 +8,7 @@ BEGIN
     -- Vypočítá průměrné hodnocení pro knihu na základě recenzí
     SELECT AVG(stars) INTO v_avg_rating
     FROM reviews
-    WHERE book_id = COALESCE(NEW.book_id, OLD.book_id);
+    WHERE book_id = COALESCE(NEW.book_id, OLD.book_id) AND approved = true;
     -- Aktualizuje průměrné hodnocení knihy v tabulce books
     UPDATE books
     SET average_rating = COALESCE(v_avg_rating, 0)  -- Pokud není průměr, nastaví 0

@@ -27,13 +27,13 @@ func BookRoute(g *fizz.RouterGroup) {
 	grp.GET("", utils.CreateOperationOption("Vrátí knihu podle ID", true), tonic.Handler(handlers.GetBookById, 200))
 
 	// Routa pro management knih
-	mgmtGrp := grp.Group("management", "Book management", "Management knih - operace pro admina.")
+	mgmtGrp := grp.Group("management", "Book management", "Management knih - operace pro admina a database managera.")
 
 	// Autentifikační middleware
 	mgmtGrp.Use(middlewares.Auth)
-	// Middleware povolující pouze admina
+	// Middleware povolující pouze admina a database managera
 	mgmtGrp.Use(func(c *gin.Context) {
-		middlewares.Role(c, []models.Role{models.RoleAdmin})
+		middlewares.Role(c, []models.Role{models.RoleAdmin, models.RoleDbManager})
 	})
 
 	// Vytvoření nové knihy
