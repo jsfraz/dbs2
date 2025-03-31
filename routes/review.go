@@ -33,7 +33,8 @@ func ReviewRoute(g *fizz.RouterGroup) {
 
 	// Vytvoření recenze
 	userGrp.POST("", utils.CreateOperationOption("Vytvoření recenze", true), tonic.Handler(handlers.CreateReview, 204))
-
+	// Zjištění zda se uživatelova recenze schvaluje
+	userGrp.GET("isBeingApproved", utils.CreateOperationOption("Zjištění zda se uživatelova recenze schvaluje", true), tonic.Handler(handlers.IsUserReviewBeingApproved, 200))
 	// TODO Aktualizace recenze
 	// TODO Odstranění recenze
 

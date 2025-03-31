@@ -109,3 +109,19 @@ func GetReviewsToApprove(c *gin.Context) ([]*models.Review, error) {
 	}
 	return reviews, nil
 }
+
+// Zjištění zda se uživatelova recenze schvaluje.
+//
+//	@param c
+//	@param request
+//	@return error
+func IsUserReviewBeingApproved(c *gin.Context, request *models.Id) (*models.TrueFalse, error) {
+	u, _ := c.Get("user")
+	// Kontrola zda recenze existuje
+	reviewExists, err := database.IsReviewBeingApproved(request.Id, u.(*models.User).ID)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return nil, err
+	}
+	return &models.TrueFalse{Value: reviewExists}, nil
+}

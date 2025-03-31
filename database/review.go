@@ -32,7 +32,7 @@ func CreateReview(review *models.Review) error {
 //	@return error
 func GetApprovedReviewsByBookId(bookId uint) ([]*models.Review, error) {
 	var reviews []*models.Review
-	err := utils.GetSingleton().PostgresDb.Where("book_id = ? AND approved = ?", bookId, true).Preload("User").Find(&reviews).Error
+	err := utils.GetSingleton().PostgresDb.Where("book_id = ? AND approved = ?", bookId, true).Preload("User").Preload("Book").Find(&reviews).Error
 	return reviews, err
 }
 
@@ -56,7 +56,7 @@ func ApproveReview(reviewId uint, approved bool) error {
 //	@return error
 func GetReviewsToApprove() ([]*models.Review, error) {
 	var reviews []*models.Review
-	err := utils.GetSingleton().PostgresDb.Where("approved = ?", false).Preload("User").Find(&reviews).Error
+	err := utils.GetSingleton().PostgresDb.Where("approved = ?", false).Preload("User").Preload("Book").Find(&reviews).Error
 	return reviews, err
 }
 
@@ -68,5 +68,17 @@ func GetReviewsToApprove() ([]*models.Review, error) {
 func ReviewExistsById(reviewId uint) (bool, error) {
 	var count int64
 	err := utils.GetSingleton().PostgresDb.Model(&models.Review{}).Where("id = ?", reviewId).Count(&count).Error
+	return count == 1, err
+}
+
+// IsReviewBeingApproved Zjištění zda se recenze schvaluje.
+//
+//	@param bookId
+//	@param userId
+//	@return bool
+//	@return error
+func IsReviewBeingApproved(bookId uint, userId uint) (bool, error) {
+	var count int64
+	err := utils.GetSingleton().PostgresDb.Model(&models.Review{}).Where("book_id = ? AND user_id = ? AND approved = ?", bookId, userId, false).Count(&count).Error
 	return count == 1, err
 }

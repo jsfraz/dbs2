@@ -2,14 +2,14 @@ package models
 
 type Review struct {
 	ID       uint   `json:"id" validate:"required"`
-	BookID   uint   `json:"bookId" validate:"required"`
-	UserID   uint   `json:"userId" validate:"required"`
+	BookID   uint   `json:"-"`
+	UserID   uint   `json:"-"`
 	Stars    int    `json:"stars" validate:"required"`
 	Text     string `json:"text" validate:"required"`
 	Approved bool   `json:"approved" validate:"required"`
 
 	// Kniha
-	Book Book `json:"-"`
+	Book Book `json:"book" validate:"required"`
 	// Uživatel
 	User User `json:"user" validate:"required"`
 }
