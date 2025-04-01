@@ -4,8 +4,11 @@ SELECT
     b.name AS book_name,
     -- Kombinace jména a příjmení autora do jednoho sloupce
     (a.first_name || ' ' || a.last_name) AS author_name,
-    COUNT(r.id) AS total_reviews,
-    COALESCE(AVG(r.stars), 0) AS average_rating,
+    -- Pouze od schválených recenzí
+    (SELECT count(rr.id) AS count
+           FROM reviews rr
+          WHERE rr.approved = true AND rr.book_id = b.id) AS total_reviews,
+    b.average_rating,
     g.name AS genre_name
 FROM 
     books b

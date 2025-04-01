@@ -6,8 +6,9 @@ SELECT
     (a.first_name || ' '::text) || a.last_name AS author_name,
     count(uob.book_id) AS total_sales,
     sum(b.price) AS total_revenue,
-    COALESCE(AVG(r.stars), 0) AS average_rating,
-    count(DISTINCT r.id) AS total_reviews
+    b.average_rating,
+    -- Pouze od schválených recenzí
+    count(DISTINCT CASE WHEN r.approved = true THEN r.id END) AS total_reviews
 FROM 
     books b
     JOIN authors a ON b.author_id = a.id
