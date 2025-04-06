@@ -53,3 +53,17 @@ func GetAllBooksInCart(userId uint) (*[]models.Book, error) {
 	}
 	return &books, nil
 }
+
+// Vrátí počet knih v košíku.
+//
+//	@param userId
+//	@return int
+//	@return error
+func GetCartCount(userId uint) (int64, error) {
+	var count int64
+	err := utils.GetSingleton().PostgresDb.Raw("SELECT get_user_cart_count(?)", userId).Scan(&count).Error
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}

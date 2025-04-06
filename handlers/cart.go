@@ -92,3 +92,24 @@ func GetAllBooksInCart(c *gin.Context) (*[]models.Book, error) {
 	}
 	return books, nil
 }
+
+// GVrátí počet knih v košíku.
+//
+//	@param c
+//	@return *models.Count
+//	@return error
+func GetCartCount(c *gin.Context) (*models.Count, error) {
+	// Načtení uživatele
+	u, exists := c.Get("user")
+	if !exists {
+		c.AbortWithStatus(500)
+		return nil, errors.New("uživatel není v kontextu")
+	}
+	// Vrácení počtu knih v košíku
+	count, err := database.GetCartCount(u.(*models.User).ID)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return nil, err
+	}
+	return &models.Count{Count: count}, nil
+}

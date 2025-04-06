@@ -31,4 +31,6 @@ func CartRoute(g *fizz.RouterGroup) {
 	grp.GET("all", utils.CreateOperationOption("Vrácení všech knih v košíku", true), tonic.Handler(handlers.GetAllBooksInCart, 200))
 	// Vrátí zda je kniha v košíku
 	grp.GET("exists", utils.CreateOperationOption("Vrátí zda je kniha v košíku", true), tonic.Handler(handlers.IsBookInCart, 200))
+	// Vrátí počet knih v košíku
+	grp.GET("count", utils.CreateOperationOption("Vrátí počet knih v košíku", true), tonic.Handler(handlers.GetCartCount, 200))
 }
