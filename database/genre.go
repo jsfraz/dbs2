@@ -23,7 +23,7 @@ func CreateGenre(genre *models.Genre) error {
 //	@return error
 func GetAllGenres() (*[]models.Genre, error) {
 	var genres []models.Genre = []models.Genre{}
-	err := utils.GetSingleton().PostgresDb.Model(&models.Genre{}).Find(&genres).Error
+	err := utils.GetSingleton().PostgresDb.Model(&models.Genre{}).Order("id ASC").Find(&genres).Error
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func GenreExistsById(id uint) (bool, error) {
 //	@return error
 func GetGenresByIds(ids []uint) (*[]models.Genre, error) {
 	var genres []models.Genre = []models.Genre{}
-	err := utils.GetSingleton().PostgresDb.Model(&models.Genre{}).Where("id IN ?", ids).Find(&genres).Error
+	err := utils.GetSingleton().PostgresDb.Model(&models.Genre{}).Where("id IN ?", ids).Order("id ASC").Find(&genres).Error
 	if err != nil {
 		return nil, err
 	}

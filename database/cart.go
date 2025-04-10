@@ -47,7 +47,7 @@ func IsBookInCart(bookId uint, userId uint) (bool, error) {
 //	@return error
 func GetAllBooksInCart(userId uint) (*[]models.Book, error) {
 	var books []models.Book
-	err := utils.GetSingleton().PostgresDb.Model(&models.Book{}).Preload("Genres").Preload("Author").Where("id IN (SELECT book_id FROM carts WHERE user_id = ?)", userId).Find(&books).Error
+	err := utils.GetSingleton().PostgresDb.Model(&models.Book{}).Preload("Genres").Preload("Author").Where("id IN (SELECT book_id FROM carts WHERE user_id = ?)", userId).Order("id ASC").Find(&books).Error
 	if err != nil {
 		return nil, err
 	}

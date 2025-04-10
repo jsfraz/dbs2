@@ -63,11 +63,9 @@ func NewRouter() (*fizz.Fizz, error) {
 				"url": fmt.Sprintf("%s/api/openapi.json", utils.GetSingleton().Config.AppUrl),
 			})
 		})
-		/*
-			engine.GET("/", func(c *gin.Context) {
-				c.Redirect(301, fmt.Sprintf("%s/swagger", utils.GetSingleton().Config.AppUrl))
-			})
-		*/
+		engine.GET("/", func(c *gin.Context) {
+			c.Redirect(301, fmt.Sprintf("%s/swagger", utils.GetSingleton().Config.AppUrl))
+		})
 	}
 
 	// Ostatní routy
@@ -80,6 +78,9 @@ func NewRouter() (*fizz.Fizz, error) {
 	WishlistRoute(grp)
 	ReviewRoute(grp)
 	DashboardRoute(grp)
+	OrderRoute(grp)
+	AddressRoute(grp)
+	DiscountRoute(grp)
 
 	if len(fizz.Errors()) != 0 {
 		return nil, fmt.Errorf("errors: %v", fizz.Errors())

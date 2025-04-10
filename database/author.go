@@ -23,7 +23,7 @@ func CreateAuthor(author *models.Author) error {
 //	@return error
 func GetAllAuthors() (*[]models.Author, error) {
 	var authors []models.Author = []models.Author{}
-	err := utils.GetSingleton().PostgresDb.Model(&models.Author{}).Find(&authors).Error
+	err := utils.GetSingleton().PostgresDb.Model(&models.Author{}).Order("id ASC").Find(&authors).Error
 	if err != nil {
 		return nil, err
 	}

@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION after_order_completion()
 AS $function$
 BEGIN
     UPDATE users 
-    SET points = points + (NEW.total_price / 10)::INT
+    SET points = points + (NEW.total_price / 5)::INT
     WHERE id = NEW.user_id::INT;
     RETURN NEW;
 END;

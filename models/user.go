@@ -20,7 +20,7 @@ type User struct {
 	// Seznam přání
 	Wishlist []Book `json:"-" gorm:"many2many:wishlists;"`
 	// Adresy uživatele
-	Addresses []Address `json:"-" gorm:"many2many:user_addresses;"`
+	Addresses []Address `json:"-"`
 }
 
 // Vrátí nového uživatele.

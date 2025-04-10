@@ -7,7 +7,7 @@ CREATE OR REPLACE FUNCTION purchase_discount(
 ) 
 RETURNS VOID AS $$
 BEGIN
-    -- Volání: SELECT purchase_discount(22, 'EXAMPLE-CODE', 100, (now() + INTERVAL '1 month')::TIMESTAMP);
+    -- Volání: SELECT purchase_discount(22, 'EXAMPLE-CODE', 500, (now() + INTERVAL '1 month')::TIMESTAMP);
     BEGIN
         -- Kontrola, zda uživatel má dostatek bodů
         IF (SELECT points FROM users WHERE id = p_user_id) < p_price THEN
@@ -15,6 +15,10 @@ BEGIN
                             p_user_id, 
                             p_price, 
                             (SELECT points FROM users WHERE id = p_user_id);
+        END IF;
+        -- Kontrola zda už kód existuje
+        IF (SELECT COUNT(*) FROM discounts WHERE code = p_discount_code) > 0 THEN
+            RAISE EXCEPTION 'Slevový kód % už existuje.', p_discount_code;
         END IF;
         -- Vytvoření slevy v tabulce discounts
         INSERT INTO discounts (
@@ -34,12 +38,6 @@ BEGIN
         UPDATE users 
         SET points = points - p_price 
         WHERE id = p_user_id;
-    -- Ošetření chyb
-    EXCEPTION 
-        WHEN unique_violation THEN
-            RAISE EXCEPTION 'Slevový kód "%" již existuje!', p_discount_code;
-        WHEN others THEN
-            RAISE;
     END;
 END;
 $$ LANGUAGE plpgsql;

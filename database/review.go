@@ -32,7 +32,7 @@ func CreateReview(review *models.Review) error {
 //	@return error
 func GetApprovedReviewsByBookId(bookId uint) ([]*models.Review, error) {
 	var reviews []*models.Review
-	err := utils.GetSingleton().PostgresDb.Where("book_id = ? AND approved = ?", bookId, true).Preload("User").Preload("Book").Find(&reviews).Error
+	err := utils.GetSingleton().PostgresDb.Where("book_id = ? AND approved = ?", bookId, true).Preload("User").Preload("Book").Order("id ASC").Find(&reviews).Error
 	return reviews, err
 }
 
@@ -56,7 +56,7 @@ func ApproveReview(reviewId uint, approved bool) error {
 //	@return error
 func GetReviewsToApprove() ([]*models.Review, error) {
 	var reviews []*models.Review
-	err := utils.GetSingleton().PostgresDb.Where("approved = ?", false).Preload("User").Preload("Book").Find(&reviews).Error
+	err := utils.GetSingleton().PostgresDb.Where("approved = ?", false).Preload("User").Preload("Book").Order("id ASC").Find(&reviews).Error
 	return reviews, err
 }
 

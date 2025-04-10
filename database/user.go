@@ -80,7 +80,7 @@ func GetUserById(id uint) (*models.User, error) {
 //	@return error
 func GetUsersByRole(roles []models.Role) (*[]models.User, error) {
 	var users []models.User = []models.User{}
-	err := utils.GetSingleton().PostgresDb.Model(&models.User{}).Where("role in ?", roles).Find(&users).Error
+	err := utils.GetSingleton().PostgresDb.Model(&models.User{}).Where("role in ?", roles).Order("id ASC").Find(&users).Error
 	if err != nil {
 		return nil, err
 	}
