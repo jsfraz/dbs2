@@ -125,3 +125,34 @@ func DeleteUsers(c *gin.Context, request *models.Ids) error {
 	}
 	return nil
 }
+
+// Smazání uživatele.
+//
+//	@param c
+//	@param request
+//	@return error
+func DeleteUser(c *gin.Context, request *models.Id) error {
+	// Kontrola zda nemaže sebe
+	u, _ := c.Get("user")
+	if u.(*models.User).ID == request.Id {
+		c.AbortWithStatus(400)
+		return errors.New("nelze mazat sebe")
+	}
+	// Kontrola zda maže customera nebo reviewApprovera
+	user, err := database.GetUserById(request.Id)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	if user.Role != models.RoleCustomer && user.Role != models.RoleReview {
+		c.AbortWithStatus(400)
+		return errors.New("nelze mazat admina nebo databaseManager")
+	}
+	// Smazání
+	err = database.DeleteUser(request.Id)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	return nil
+}

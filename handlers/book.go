@@ -350,3 +350,17 @@ func DeleteBookImage(c *gin.Context, request *models.Id) error {
 	}
 	return nil
 }
+
+// Smaže knihu.
+//
+//	@param c
+//	@param request
+//	@return error
+func DeleteBook(c *gin.Context, request *models.Id) error {
+	err := database.DeleteBook(request.Id)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	return nil
+}

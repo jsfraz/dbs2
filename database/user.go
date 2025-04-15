@@ -102,3 +102,15 @@ func UpdateUser(user *models.User) error {
 func DeleteUsers(ids []uint) error {
 	return utils.GetSingleton().PostgresDb.Where("id IN ?", ids).Delete(&models.User{}).Error
 }
+
+// Smaže uživatele.
+//
+//	@param userId
+//	@return error
+func DeleteUser(userId uint) error {
+	err := utils.GetSingleton().PostgresDb.Exec("SELECT delete_user($1)", userId).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}

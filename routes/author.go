@@ -34,5 +34,6 @@ func AuthorRoute(g *fizz.RouterGroup) {
 	// Vytvoření autora
 	mgmtGrp.POST("author", utils.CreateOperationOption("Vytvoření autora", true), tonic.Handler(handlers.CreateAuthor, 204))
 	// TODO aktualiazce autora
-	// TODO odstarnění autora
+	// Odstarnění autora
+	mgmtGrp.DELETE("author", utils.CreateOperationOption("Odstarnění autora", true), tonic.Handler(handlers.DeleteAuthor, 204))
 }

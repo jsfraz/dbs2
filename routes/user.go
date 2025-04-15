@@ -38,5 +38,7 @@ func UserRoute(g *fizz.RouterGroup) {
 	// Aktualizae uživatele
 	mgmtGrp.PATCH("user", utils.CreateOperationOption("Aktualizace uživatele.", true), tonic.Handler(handlers.UpdateUser, 204))
 	// Mazání uživatelů
-	mgmtGrp.DELETE("users", utils.CreateOperationOption("Mazání uživatelů.", true), tonic.Handler(handlers.DeleteUsers, 204))
+	// mgmtGrp.DELETE("users", utils.CreateOperationOption("Mazání uživatelů.", true), tonic.Handler(handlers.DeleteUsers, 204))
+	// Mazání uživatele
+	mgmtGrp.DELETE("user", utils.CreateOperationOption("Mazání uživatele.", true), tonic.Handler(handlers.DeleteUser, 204))
 }

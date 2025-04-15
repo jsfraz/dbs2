@@ -119,3 +119,15 @@ func SearchBooks(searchBooks *models.SearchBooks) (*[]models.Book, error) {
 	}
 	return &books, nil
 }
+
+// Smaže knihu.
+//
+//	@param bookId
+//	@return error
+func DeleteBook(bookId uint) error {
+	err := utils.GetSingleton().PostgresDb.Exec("SELECT delete_book($1)", bookId).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -43,3 +43,15 @@ func AuthorExistsById(id uint) (bool, error) {
 	}
 	return count == 1, nil
 }
+
+// Smaže autora.
+//
+//	@param authorId
+//	@return error
+func DeleteAuthor(authorId uint) error {
+	err := utils.GetSingleton().PostgresDb.Exec("SELECT delete_author($1)", authorId).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}

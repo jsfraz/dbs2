@@ -43,3 +43,17 @@ func GetAllAuthors(c *gin.Context) (*[]models.Author, error) {
 	}
 	return authors, nil
 }
+
+// Smaže autora.
+//
+//	@param c
+//	@param request
+//	@return error
+func DeleteAuthor(c *gin.Context, request *models.Id) error {
+	err := database.DeleteAuthor(request.Id)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	return nil
+}

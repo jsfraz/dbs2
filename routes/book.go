@@ -44,4 +44,6 @@ func BookRoute(g *fizz.RouterGroup) {
 	mgmtGrp.GinRouterGroup().POST("bookImage", handlers.UploadBookImage)
 	// Odstranění obrázku knihy
 	mgmtGrp.DELETE("bookImage", utils.CreateOperationOption("Odstranění obrázku knihy", true), tonic.Handler(handlers.DeleteBookImage, 204))
+	// Mazání knihy
+	mgmtGrp.DELETE("book", utils.CreateOperationOption("Mazání knihy", true), tonic.Handler(handlers.DeleteBook, 204))
 }
