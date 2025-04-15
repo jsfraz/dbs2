@@ -27,4 +27,6 @@ func OrderRoute(g *fizz.RouterGroup) {
 
 	// Vytvoření objednávky
 	grp.POST("", utils.CreateOperationOption("Vytvoření objednávky", true), tonic.Handler(handlers.CreateOrder, 204))
+	// Vrátí všechny objednávky uživatele
+	grp.GET("all", utils.CreateOperationOption("Vrátí všechny objednávky uživatele", true), tonic.Handler(handlers.GetAllOrders, 200))
 }

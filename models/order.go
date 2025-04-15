@@ -3,20 +3,20 @@ package models
 import "time"
 
 type Order struct {
-	ID         uint
-	UserID     uint
-	TotalPrice uint64
-	Status     string
-	AddressID  uint
-	DiscountID *uint
-	CreatedAt  time.Time
+	ID         uint      `json:"id" validate:"required"`
+	UserID     uint      `json:"userId" validate:"required"`
+	TotalPrice uint64    `json:"totalPrice" validate:"required"`
+	Status     string    `json:"status" validate:"required"`
+	AddressID  uint      `json:"addressId" validate:"required"`
+	DiscountID *uint     `json:"-"`
+	CreatedAt  time.Time `json:"createdAt" validate:"required"`
 
 	// Uživatel
-	User User // TODO skrýt ve JSONu
+	User User `json:"-"`
 	// Knížky v objednávce
-	OrderedBooks []Book `gorm:"many2many:user_order_books;"`
+	OrderedBooks []Book `json:"orderedBooks" validate:"required" gorm:"many2many:user_order_books;"`
 	// (Ne)Použitá sleva
-	Discount *Discount
+	Discount *Discount `json:"discount"`
 	// Adresa
-	Address Address
+	Address Address `json:"address" validate:"required"`
 }

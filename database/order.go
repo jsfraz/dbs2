@@ -61,3 +61,16 @@ func CreateOrder(userId uint, addressId uint, discountId *uint) error {
 	}
 	return tx.Commit().Error
 }
+
+// Vrátí všechny objednávky uživatele
+//
+//	@param userId
+//	@return *[]models.Order
+//	@return error
+func GetAllOrders(userId uint) (*[]models.Order, error) {
+	var orders []models.Order
+	if err := utils.GetSingleton().PostgresDb.Preload("OrderedBooks").Preload("OrderedBooks.Author").Preload("OrderedBooks.Genres").Preload("Address").Preload("Discount").Where("user_id = ?", userId).Find(&orders).Error; err != nil {
+		return nil, err
+	}
+	return &orders, nil
+}

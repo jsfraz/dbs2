@@ -35,3 +35,21 @@ func CreateOrder(c *gin.Context, order *models.CreateOrder) error {
 	}
 	return nil
 }
+
+// Vrátí všechny objednávky uživatele
+//
+//	@param c
+//	@return error
+func GetAllOrders(c *gin.Context) error {
+	u, exists := c.Get("user")
+	if !exists {
+		c.AbortWithStatus(500)
+		return errors.New("uživatel není v kontextu")
+	}
+	orders, err := database.GetAllOrders(u.(*models.User).ID)
+	if err != nil {
+		return err
+	}
+	c.JSON(200, orders)
+	return nil
+}
