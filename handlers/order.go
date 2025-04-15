@@ -40,16 +40,15 @@ func CreateOrder(c *gin.Context, order *models.CreateOrder) error {
 //
 //	@param c
 //	@return error
-func GetAllOrders(c *gin.Context) error {
+func GetAllOrders(c *gin.Context) (*[]models.Order, error) {
 	u, exists := c.Get("user")
 	if !exists {
 		c.AbortWithStatus(500)
-		return errors.New("uživatel není v kontextu")
+		return nil, errors.New("uživatel není v kontextu")
 	}
 	orders, err := database.GetAllOrders(u.(*models.User).ID)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	c.JSON(200, orders)
-	return nil
+	return orders, nil
 }
