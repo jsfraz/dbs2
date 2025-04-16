@@ -27,7 +27,6 @@ func CreateOrder(c *gin.Context, order *models.CreateOrder) error {
 	if address.UserID != u.(*models.User).ID {
 		return errors.New("adresa nepatří uživateli")
 	}
-	// TODO vymyslet nějaké podmínky pro slevy a kromě frontendu je validovat i zde
 	// Vytvoří objednávku
 	err = database.CreateOrder(u.(*models.User).ID, order.AddressId, order.DiscountId)
 	if err != nil {

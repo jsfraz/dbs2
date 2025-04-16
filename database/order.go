@@ -31,7 +31,11 @@ func CreateOrder(userId uint, addressId uint, discountId *uint) error {
 			tx.Rollback()
 			return err
 		}
-		totalPrice -= discount.Price
+		if discount.Price > totalPrice {
+			totalPrice = 0
+		} else {
+			totalPrice -= discount.Price
+		}
 	}
 	// Označení slevy jako použité
 	if discountId != nil {

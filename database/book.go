@@ -104,7 +104,7 @@ func SearchBooks(searchBooks *models.SearchBooks) (*[]models.Book, error) {
 	var books []models.Book = []models.Book{}
 	tx := utils.GetSingleton().PostgresDb.Model(&models.Book{}).Preload("Genres").Preload("Author")
 	if searchBooks.Name != nil {
-		tx = tx.Where("name LIKE ?", "%"+*searchBooks.Name+"%")
+		tx = tx.Where("unaccent(name) ILIKE unaccent(?)", "%"+*searchBooks.Name+"%")
 	}
 	if searchBooks.AuthorIds != nil {
 		tx = tx.Where("author_id IN ?", *searchBooks.AuthorIds)
