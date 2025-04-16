@@ -4,6 +4,23 @@ Backend pro projekt pro KIKM/DBS2 a KIT/TNPW2.
 
 - [frontend projektu](https://github.com/DomDomiX/DBS2_Frontend)
 
+## Použité technologie
+
+- jazyk [Go](https://go.dev/)
+- [PostgreSQL databáze](https://www.postgresql.org/)
+- [OpenAPI 3 specifikace](https://swagger.io/specification/)
+
+## Použité knihovny
+
+| Název                                  | Popis                                             | URL projektu                                 |
+|----------------------------------------|---------------------------------------------------|----------------------------------------------|
+| gorm.io/gorm                           | ORM knihovna pro práci s relační databází         | https://gorm.io/                             |
+| github.com/gin-gonic/gin               | Webový framework                                  | https://gin-gonic.com/                       |
+| github.com/wI2L/fizz                   | gin nadstavba pro Open API 3                      | https://github.com/wI2L/fizz                 |
+| github.com/go-playground/validator/v10 | Knihovna pro validaci HTTP požadavků a jiných dat | https://github.com/go-playground/validator   |
+| github.com/golang-jwt/jwt              | Knihovna pro JWT                                  | https://golang-jwt.github.io/jwt/            |
+| github.com/kelseyhightower/envconfig   | Knihovna pro .env konfiguraci                     | https://github.com/kelseyhightower/envconfig |
+
 ## Požadavky
 
 - Docker
@@ -14,7 +31,20 @@ Backend pro projekt pro KIKM/DBS2 a KIT/TNPW2.
 
 - definováno v [.env](.env) souboru
 
-- TODO proměnné prostředí
+| Název                 | Popis                                                   | Příklad                                 | Povinné |
+|-----------------------|---------------------------------------------------------|-----------------------------------------|---------|
+| GIN_MODE              | Určuje zda je program v debug módu nebo v produkci      | `debug` nebo `release`                  | Ano     |
+| APP_URL               | Adresa aplikace (kvůli OpenAPI specifikaci)             | `https://example.com`                   | Ano     |
+| SWAGGER               | Určije zda je na adrese APP_URL/swagger.json Swagger UI | `true` nebo `false`                     | Ano     |
+| ADMIN_MAIL            | Adminův e-mail                                          | `user@example.com`                      | Ano     |
+| ADMIN_PW              | Adminovo heslo                                          | tajné heslo...                          | Ano     |
+| PG_USER               | PostgreSQL uživatel                                     | `dbs2`                                  | Ano     |
+| PG_PW                 | Heslo pro PostgreSQL uživatele                          | tajné heslo...                          | Ano     |
+| PG_HOST               | Adresa PostgreSQL serveru                               | `localhost`                             | Ano     |
+| PG_PORT               | Port PostgreSQL serveru                                 | `5432`                                  | Ano     |
+| PG_DB                 | Název PostgreSQL databáze                               | `dbs2`                                  | Ano     |
+| ACCESS_TOKEN_LIFESPAN | Životnost access tokenu ve vteřinách                    | `111600`                                | Ano     |
+| ACCESS_TOKEN_SECRET   | Tajný klíč pro podepisování access tokenů               | dlouhý text... (třeba sloka z písničky) | Ano     |
 
 ## Instalace
 
