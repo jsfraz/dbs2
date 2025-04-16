@@ -108,7 +108,7 @@ func DeleteUsers(ids []uint) error {
 //	@param userId
 //	@return error
 func DeleteUser(userId uint) error {
-	err := utils.GetSingleton().PostgresDb.Exec("SELECT delete_user($1)", userId).Error
+	err := utils.GetSingleton().PostgresDb.Exec("CALL delete_user($1)", userId).Error
 	if err != nil {
 		return err
 	}

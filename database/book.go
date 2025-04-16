@@ -125,7 +125,7 @@ func SearchBooks(searchBooks *models.SearchBooks) (*[]models.Book, error) {
 //	@param bookId
 //	@return error
 func DeleteBook(bookId uint) error {
-	err := utils.GetSingleton().PostgresDb.Exec("SELECT delete_book($1)", bookId).Error
+	err := utils.GetSingleton().PostgresDb.Exec("CALL delete_book($1)", bookId).Error
 	if err != nil {
 		return err
 	}

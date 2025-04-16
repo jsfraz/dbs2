@@ -362,5 +362,12 @@ func DeleteBook(c *gin.Context, request *models.Id) error {
 		c.AbortWithStatus(500)
 		return err
 	}
+	_ = os.Remove(fmt.Sprintf("./uploads/books/%d.jpg", request.Id))
+	/*
+		if err != nil {
+			c.AbortWithStatus(500)
+			return err
+		}
+	*/
 	return nil
 }

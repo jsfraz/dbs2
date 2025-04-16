@@ -49,7 +49,7 @@ func AuthorExistsById(id uint) (bool, error) {
 //	@param authorId
 //	@return error
 func DeleteAuthor(authorId uint) error {
-	err := utils.GetSingleton().PostgresDb.Exec("SELECT delete_author($1)", authorId).Error
+	err := utils.GetSingleton().PostgresDb.Exec("CALL delete_author($1)", authorId).Error
 	if err != nil {
 		return err
 	}
