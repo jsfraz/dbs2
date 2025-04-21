@@ -35,7 +35,7 @@ Backend pro projekt pro KIKM/DBS2 a KIT/TNPW2.
 |-----------------------|---------------------------------------------------------|-----------------------------------------|---------|
 | GIN_MODE              | Určuje zda je program v debug módu nebo v produkci      | `debug` nebo `release`                  | Ano     |
 | APP_URL               | Adresa aplikace (kvůli OpenAPI specifikaci)             | `https://example.com`                   | Ano     |
-| SWAGGER               | Určije zda je na adrese APP_URL/swagger.json Swagger UI | `true` nebo `false`                     | Ano     |
+| SWAGGER               | Určuje zda je na adrese APP_URL/swagger.json Swagger UI | `true` nebo `false`                     | Ano     |
 | ADMIN_MAIL            | Adminův e-mail                                          | `user@example.com`                      | Ano     |
 | ADMIN_PW              | Adminovo heslo                                          | tajné heslo...                          | Ano     |
 | PG_USER               | PostgreSQL uživatel                                     | `dbs2`                                  | Ano     |
