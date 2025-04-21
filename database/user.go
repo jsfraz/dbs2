@@ -114,3 +114,16 @@ func DeleteUser(userId uint) error {
 	}
 	return nil
 }
+
+// Zjistí zda existuje alespoň jeden admin.
+//
+//	@return bool
+//	@return error
+func AdminExists() (bool, error) {
+	var count int64
+	err := utils.GetSingleton().PostgresDb.Model(&models.User{}).Where("role = ?", models.RoleAdmin).Count(&count).Error
+	if err != nil {
+		return false, err
+	}
+	return count == 1, nil
+}

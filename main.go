@@ -73,8 +73,7 @@ func main() {
 		}
 	}
 
-	// Kontrola admina
-	exists, _ := database.UserExistsByMail(singleton.Config.AdminMail)
+	exists, _ := database.AdminExists()
 	if !exists {
 		u, err := models.NewUser("", "", singleton.Config.AdminMail, models.RoleAdmin, singleton.Config.AdminPassword)
 		if err != nil {
