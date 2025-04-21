@@ -3,6 +3,7 @@ package database
 import (
 	"dbs2/models"
 	"dbs2/utils"
+	"errors"
 )
 
 // Vytvoří objednávku.
@@ -18,6 +19,9 @@ func CreateOrder(userId uint, addressId uint, discountId *uint) error {
 	if err := tx.Preload("Cart").Where("id = ?", userId).First(&user).Error; err != nil {
 		tx.Rollback()
 		return err
+	}
+	if len(user.Cart) == 0 {
+		return errors.New("košík je prázdný")
 	}
 	// Cena
 	var totalPrice uint64
