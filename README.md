@@ -8,18 +8,18 @@ Backend pro projekt pro KIKM/DBS2 a KIT/TNPW2.
 
 - jazyk [Go](https://go.dev/)
 - [PostgreSQL databáze](https://www.postgresql.org/)
-- [OpenAPI 3 specifikace](https://swagger.io/specification/)
+- [OpenAPI 3 specifikace](https://swagger.io/specification/) ([openapi.json](openapi.json))
 
 ## Použité knihovny
 
-| Název                                  | Popis                                             | URL projektu                                 |
-|----------------------------------------|---------------------------------------------------|----------------------------------------------|
-| gorm.io/gorm                           | ORM knihovna pro práci s relační databází         | https://gorm.io/                             |
-| github.com/gin-gonic/gin               | Webový framework                                  | https://gin-gonic.com/                       |
-| github.com/wI2L/fizz                   | gin nadstavba pro Open API 3                      | https://github.com/wI2L/fizz                 |
-| github.com/go-playground/validator/v10 | Knihovna pro validaci HTTP požadavků a jiných dat | https://github.com/go-playground/validator   |
-| github.com/golang-jwt/jwt              | Knihovna pro JWT                                  | https://golang-jwt.github.io/jwt/            |
-| github.com/kelseyhightower/envconfig   | Knihovna pro .env konfiguraci                     | https://github.com/kelseyhightower/envconfig |
+| Název                                  | Popis                                             | URL projektu                                   |
+|----------------------------------------|---------------------------------------------------|------------------------------------------------|
+| gorm.io/gorm                           | ORM knihovna pro práci s relační databází         | <https://gorm.io/>                             |
+| github.com/gin-gonic/gin               | Webový framework                                  | <https://gin-gonic.com/>                       |
+| github.com/wI2L/fizz                   | gin nadstavba pro Open API 3                      | <https://github.com/wI2L/fizz>                 |
+| github.com/go-playground/validator/v10 | Knihovna pro validaci HTTP požadavků a jiných dat | <https://github.com/go-playground/validator>   |
+| github.com/golang-jwt/jwt              | Knihovna pro JWT                                  | <https://golang-jwt.github.io/jwt/>            |
+| github.com/kelseyhightower/envconfig   | Knihovna pro .env konfiguraci                     | <https://github.com/kelseyhightower/envconfig> |
 
 ## Požadavky
 
@@ -70,7 +70,7 @@ sudo docker compose up -d --build
 ## Náležitosti
 
 - ✔ cca. 10 tabulek navrženého datového modelu (individuální domluva)
-- ❌ alespoň jeden číselník – viz. například https://cs.wikipedia.org/wiki/%C4%8C%C3%ADseln%C3%ADk
+- ❌ alespoň jeden číselník – viz. například <https://cs.wikipedia.org/wiki/%C4%8C%C3%ADseln%C3%ADk>
 - ✔ alespoň tři pohledy. které budou volány z aplikace
 - ✔ alespoň tři funkce různého typu s odpovídající složitostí
 - ✔ alespoň tři uložené procedury

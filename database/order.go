@@ -17,7 +17,6 @@ func CreateOrder(userId uint, addressId uint, discountId *uint) error {
 	// Uživatele s jeho košíkem (books)
 	var user models.User
 	if err := tx.Preload("Cart").Where("id = ?", userId).First(&user).Error; err != nil {
-		tx.Rollback()
 		return err
 	}
 	if len(user.Cart) == 0 {
@@ -32,7 +31,6 @@ func CreateOrder(userId uint, addressId uint, discountId *uint) error {
 	if discountId != nil {
 		discount, err := GetDiscount(*discountId, userId)
 		if err != nil {
-			tx.Rollback()
 			return err
 		}
 		if discount.Price > totalPrice {
@@ -44,7 +42,6 @@ func CreateOrder(userId uint, addressId uint, discountId *uint) error {
 	// Označení slevy jako použité
 	if discountId != nil {
 		if err := tx.Model(&models.Discount{}).Where("id = ?", *discountId).Update("used", true).Error; err != nil {
-			tx.Rollback()
 			return err
 		}
 	}

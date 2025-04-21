@@ -1,0 +1,2115 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "dbs2",
+        "description": "Backend pro projekt pro KIKM/DBS2 a KIT/TNPW2.",
+        "version": ""
+    },
+    "servers": [
+        {
+            "url": "https://dbs2-backend.josefraz.cz",
+            "description": "https://dbs2-backend.josefraz.cz"
+        }
+    ],
+    "paths": {
+        "/api/address": {
+            "get": {
+                "tags": [
+                    "Address"
+                ],
+                "summary": "Všechny adresy zákazníka",
+                "operationId": "GetAllCustomerAddresses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsAddress"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Address"
+                ],
+                "summary": "Vytvoření adresy",
+                "operationId": "CreateAddress",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateAddressInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/auth": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Přihlášení",
+                "operationId": "Login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelsLoginResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Registrace zákazníka",
+                "operationId": "Register",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelsLoginResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/author/all": {
+            "get": {
+                "tags": [
+                    "Author"
+                ],
+                "summary": "Všichni autoři",
+                "operationId": "GetAllAuthors",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsAuthor"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/author/management/author": {
+            "post": {
+                "tags": [
+                    "Author management"
+                ],
+                "summary": "Vytvoření autora",
+                "operationId": "CreateAuthor",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateAuthorInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Author management"
+                ],
+                "summary": "Odstarnění autora",
+                "operationId": "DeleteAuthor",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/book": {
+            "get": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Vrátí knihu podle ID",
+                "operationId": "GetBookById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelsBook"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/book/all": {
+            "get": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Všechny knihy",
+                "operationId": "GetAllBooks",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsBook"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/book/management/book": {
+            "post": {
+                "tags": [
+                    "Book management"
+                ],
+                "summary": "Vytvoření knihy",
+                "operationId": "CreateBook",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateBookInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelsBook"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Book management"
+                ],
+                "summary": "Mazání knihy",
+                "operationId": "DeleteBook",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Book management"
+                ],
+                "summary": "Aktualizace knihy",
+                "operationId": "UpdateBook",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateBookInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/book/management/bookImage": {
+            "delete": {
+                "tags": [
+                    "Book management"
+                ],
+                "summary": "Odstranění obrázku knihy",
+                "operationId": "DeleteBookImage",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/book/search": {
+            "get": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Vyhledávání knih",
+                "operationId": "SearchBooks",
+                "parameters": [
+                    {
+                        "name": "authorIds",
+                        "in": "query",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer",
+                                "format": "int32"
+                            }
+                        }
+                    },
+                    {
+                        "name": "genreIds",
+                        "in": "query",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer",
+                                "format": "int32"
+                            }
+                        }
+                    },
+                    {
+                        "name": "maxPrice",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "maximum": 1000,
+                            "minimum": 100
+                        }
+                    },
+                    {
+                        "name": "minPrice",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "maximum": 1000,
+                            "minimum": 100
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsBook"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/cart": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Přidání knihy do košíku",
+                "operationId": "AddBookToCart",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Odstranění knihy z košíku",
+                "operationId": "RemoveBookFromCart",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/cart/all": {
+            "get": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Vrácení všech knih v košíku",
+                "operationId": "GetAllBooksInCart",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsBook"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/cart/count": {
+            "get": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Vrátí počet knih v košíku",
+                "operationId": "GetCartCount",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelsCount"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/cart/exists": {
+            "get": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Vrátí zda je kniha v košíku",
+                "operationId": "IsBookInCart",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelsTrueFalse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/dashboard/bookPopularityStats": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Popularita knih",
+                "operationId": "BookPopularityStats",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsBookPopularityStat"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/dashboard/bookStats": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Statistiky knih",
+                "operationId": "BookStats",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsBookStat"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/dashboard/customerActivity": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Aktivita zákazníků",
+                "operationId": "CustomerActivity",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsCustomerActivity"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/discount": {
+            "get": {
+                "tags": [
+                    "Discount"
+                ],
+                "summary": "Získání všech slev zákazníka",
+                "operationId": "GetAllCustomerDiscounts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsDiscount"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Discount"
+                ],
+                "summary": "Vytvoření slevy",
+                "operationId": "CreateDiscount",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateDiscountInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/genre/all": {
+            "get": {
+                "tags": [
+                    "Genre"
+                ],
+                "summary": "Všechny žánry",
+                "operationId": "GetAllGenres",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsGenre"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/genre/management/genre": {
+            "post": {
+                "tags": [
+                    "Genre management"
+                ],
+                "summary": "Vytvoření žánru",
+                "operationId": "CreateGenre",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateGenreInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/order": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Vytvoření objednávky",
+                "operationId": "CreateOrder",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateOrderInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/order/all": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Vrátí všechny objednávky uživatele",
+                "operationId": "GetAllOrders",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsOrder"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/review/all": {
+            "get": {
+                "tags": [
+                    "Review"
+                ],
+                "summary": "Všechny schválené recenze podle knihy.",
+                "operationId": "GetApprovedReviewsByBookId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsReview"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/review/customer": {
+            "post": {
+                "tags": [
+                    "Customer review"
+                ],
+                "summary": "Vytvoření recenze",
+                "operationId": "CreateReview",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateReviewInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/review/customer/isBeingApproved": {
+            "get": {
+                "tags": [
+                    "Customer review"
+                ],
+                "summary": "Zjištění zda se uživatelova recenze schvaluje",
+                "operationId": "IsUserReviewBeingApproved",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelsTrueFalse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/review/management/approve": {
+            "post": {
+                "tags": [
+                    "Review management"
+                ],
+                "summary": "Schvalování/smazání recenzí",
+                "operationId": "ApproveReview",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ApproveReviewInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/review/management/toApprove": {
+            "get": {
+                "tags": [
+                    "Review management"
+                ],
+                "summary": "Vrátí recenze ke schválení",
+                "operationId": "GetReviewsToApprove",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsReview"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user/management/byRoles": {
+            "get": {
+                "tags": [
+                    "User management"
+                ],
+                "summary": "Všichni uživatelé kteří nejsou zákaznící",
+                "operationId": "GetUsersByRoles",
+                "parameters": [
+                    {
+                        "name": "roles",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "style": "form",
+                        "explode": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsUser"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user/management/user": {
+            "post": {
+                "tags": [
+                    "User management"
+                ],
+                "summary": "Vytvoření uživatele s rolí databaseManager nebo reviewApprover",
+                "operationId": "CreateUser",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateUserInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "User management"
+                ],
+                "summary": "Mazání uživatele.",
+                "operationId": "DeleteUser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "User management"
+                ],
+                "summary": "Aktualizace uživatele.",
+                "operationId": "UpdateUser",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUserInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user/whoami": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Kdo jsem?",
+                "operationId": "WhoAmI",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelsUser"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/wishlist": {
+            "post": {
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Přidání knihy do seznamu přání",
+                "operationId": "AddBookToWishlist",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Odstranění knihy z seznamu přání",
+                "operationId": "RemoveBookFromWishlist",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/wishlist/all": {
+            "get": {
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Vrácení všech knih v seznamu přání",
+                "operationId": "GetAllBooksInWishlist",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ModelsBook"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/wishlist/exists": {
+            "get": {
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Vrátí zda je kniha v seznamu přání",
+                "operationId": "IsBookInWishlist",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelsTrueFalse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ApproveReviewInput": {
+                "type": "object",
+                "properties": {
+                    "approved": {
+                        "type": "boolean"
+                    },
+                    "reviewId": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "CreateAddressInput": {
+                "type": "object",
+                "properties": {
+                    "city": {
+                        "type": "string"
+                    },
+                    "postCode": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "street": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "city",
+                    "postCode",
+                    "street"
+                ]
+            },
+            "CreateAuthorInput": {
+                "type": "object",
+                "properties": {
+                    "birth": {
+                        "type": "string"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "birth",
+                    "firstName",
+                    "lastName"
+                ]
+            },
+            "CreateBookInput": {
+                "type": "object",
+                "properties": {
+                    "authorId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "genreIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    "isbn": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "published": {
+                        "type": "string"
+                    },
+                    "summary": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "authorId",
+                    "genreIds",
+                    "isbn",
+                    "name",
+                    "price",
+                    "published",
+                    "summary"
+                ]
+            },
+            "CreateDiscountInput": {
+                "type": "object",
+                "properties": {
+                    "pointPrice": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 100
+                    }
+                },
+                "required": [
+                    "pointPrice"
+                ]
+            },
+            "CreateGenreInput": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "CreateOrderInput": {
+                "type": "object",
+                "properties": {
+                    "addressId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "discountId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "addressId"
+                ]
+            },
+            "CreateReviewInput": {
+                "type": "object",
+                "properties": {
+                    "bookId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "stars": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "text": {
+                        "type": "string",
+                        "maxLength": 500
+                    }
+                },
+                "required": [
+                    "bookId",
+                    "stars",
+                    "text"
+                ]
+            },
+            "CreateUserInput": {
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "mail": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "firstName",
+                    "lastName",
+                    "mail",
+                    "password",
+                    "role"
+                ]
+            },
+            "LoginInput": {
+                "type": "object",
+                "properties": {
+                    "mail": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "mail",
+                    "password"
+                ]
+            },
+            "ModelsAddress": {
+                "type": "object",
+                "properties": {
+                    "city": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "postCode": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "street": {
+                        "type": "string"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "required": [
+                    "city",
+                    "id",
+                    "postCode",
+                    "street",
+                    "userId"
+                ]
+            },
+            "ModelsAuthor": {
+                "type": "object",
+                "properties": {
+                    "birth": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "birth",
+                    "firstName",
+                    "id",
+                    "lastName"
+                ]
+            },
+            "ModelsBook": {
+                "type": "object",
+                "properties": {
+                    "author": {
+                        "$ref": "#/components/schemas/ModelsAuthor"
+                    },
+                    "averageRating": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "genres": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ModelsGenre"
+                        }
+                    },
+                    "hasImage": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "isbn": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "published": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "summary": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "author",
+                    "averageRating",
+                    "genres",
+                    "hasImage",
+                    "id",
+                    "isbn",
+                    "name",
+                    "price",
+                    "published",
+                    "summary"
+                ]
+            },
+            "ModelsBookPopularityStat": {
+                "type": "object",
+                "properties": {
+                    "author_name": {
+                        "type": "string"
+                    },
+                    "average_rating": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "book_id": {
+                        "type": "string"
+                    },
+                    "book_name": {
+                        "type": "string"
+                    },
+                    "genre_name": {
+                        "type": "string"
+                    },
+                    "total_reviews": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "ModelsBookStat": {
+                "type": "object",
+                "properties": {
+                    "authorName": {
+                        "type": "string"
+                    },
+                    "averageRating": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "bookId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "bookName": {
+                        "type": "string"
+                    },
+                    "totalRevenue": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "totalReviews": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalSales": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "ModelsCount": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "count"
+                ]
+            },
+            "ModelsCustomerActivity": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "fullName": {
+                        "type": "string"
+                    },
+                    "points": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalCartBooks": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalOrders": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalReviews": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalSpent": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "totalWishlistBooks": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "ModelsDiscount": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "price": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "used": {
+                        "type": "boolean"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "validUntil": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "code",
+                    "id",
+                    "price",
+                    "used",
+                    "userId",
+                    "validUntil"
+                ]
+            },
+            "ModelsGenre": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name"
+                ]
+            },
+            "ModelsLoginResponse": {
+                "type": "object",
+                "properties": {
+                    "accessToken": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "accessToken"
+                ]
+            },
+            "ModelsOrder": {
+                "type": "object",
+                "properties": {
+                    "address": {
+                        "$ref": "#/components/schemas/ModelsAddress"
+                    },
+                    "addressId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "discount": {
+                        "$ref": "#/components/schemas/ModelsDiscount"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "orderedBooks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ModelsBook"
+                        }
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "totalPrice": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "required": [
+                    "address",
+                    "addressId",
+                    "createdAt",
+                    "id",
+                    "orderedBooks",
+                    "status",
+                    "totalPrice",
+                    "userId"
+                ]
+            },
+            "ModelsReview": {
+                "type": "object",
+                "properties": {
+                    "approved": {
+                        "type": "boolean"
+                    },
+                    "book": {
+                        "$ref": "#/components/schemas/ModelsBook"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "stars": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "text": {
+                        "type": "string"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/ModelsUser"
+                    }
+                },
+                "required": [
+                    "approved",
+                    "book",
+                    "id",
+                    "stars",
+                    "text",
+                    "user"
+                ]
+            },
+            "ModelsTrueFalse": {
+                "type": "object",
+                "properties": {
+                    "value": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "value"
+                ]
+            },
+            "ModelsUser": {
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "mail": {
+                        "type": "string"
+                    },
+                    "points": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "role": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "firstName",
+                    "id",
+                    "lastName",
+                    "mail",
+                    "points",
+                    "role"
+                ]
+            },
+            "RegisterInput": {
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "mail": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "firstName",
+                    "lastName",
+                    "mail",
+                    "password"
+                ]
+            },
+            "UpdateBookInput": {
+                "type": "object",
+                "properties": {
+                    "authorId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "genreIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "isbn": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "published": {
+                        "type": "string"
+                    },
+                    "summary": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "authorId",
+                    "genreIds",
+                    "id",
+                    "isbn",
+                    "name",
+                    "price",
+                    "published",
+                    "summary"
+                ]
+            },
+            "UpdateUserInput": {
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "lastName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "mail": {
+                        "type": "string",
+                        "format": "email",
+                        "nullable": true
+                    },
+                    "password": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Address",
+            "description": "Adresy"
+        },
+        {
+            "name": "Authentication",
+            "description": "Přihlášení uživatele"
+        },
+        {
+            "name": "Author",
+            "description": "Autoři"
+        },
+        {
+            "name": "Author management",
+            "description": "Management autorů - operace pro admina a database managera."
+        },
+        {
+            "name": "Book",
+            "description": "Knihy"
+        },
+        {
+            "name": "Book management",
+            "description": "Management knih - operace pro admina a database managera."
+        },
+        {
+            "name": "Cart",
+            "description": "Košík"
+        },
+        {
+            "name": "Customer review",
+            "description": "Recenze zákazníka"
+        },
+        {
+            "name": "Dashboard",
+            "description": "Dashboard"
+        },
+        {
+            "name": "Discount",
+            "description": "Slevy"
+        },
+        {
+            "name": "Genre",
+            "description": "Žánry"
+        },
+        {
+            "name": "Genre management",
+            "description": "Management žánrů - operace pro admina a database managera."
+        },
+        {
+            "name": "Order",
+            "description": "Objednávky"
+        },
+        {
+            "name": "Review",
+            "description": "Recenze"
+        },
+        {
+            "name": "Review management",
+            "description": "Management recenzí - operace pro admina a review approvera."
+        },
+        {
+            "name": "User",
+            "description": "Uživatelé"
+        },
+        {
+            "name": "User management",
+            "description": "Management uživatelů - operace pro admina."
+        },
+        {
+            "name": "Wishlist",
+            "description": "Seznam přání"
+        }
+    ]
+}
