@@ -1,36 +1,46 @@
 name: dbs2
 
-# TODO komentáře
-
 services:
 
+  # PostgreSQL databáze
   dbs2-postgres:
-    image: postgres:17-alpine
+    image: postgres:17-alpine # PostgreSQL obraz založený na Alpine Linuxu
     container_name: dbs2-postgres
     environment:
+      # Konfigurace PostgreSQL
       - POSTGRES_USER=${PG_USER}
       - POSTGRES_PASSWORD=${PG_PW}
       - POSTGRES_DB=${PG_DB}
     ports:
+      # Mapování portu z kontejneru na hostitelský port (kvůli připojení k databázi z GUI klienta)
       - "10.8.0.1:5432:5432"
     volumes:
+      # Databázové úložiště
       - postgres_data:/var/lib/postgresql/data
+      # Časové pásmo
       - /etc/localtime:/etc/localtime:ro
     restart: always
 
+  # Backend
   dbs2:
     container_name: dbs2
+    # Sestavení obrazu při rozběhnutí compose
     build:
       context: .
     restart: always
+    # Závislost na databázi
     depends_on:
       - dbs2-postgres
     ports:
+      # Mapování portu z kontejneru na hostitelský port (kvůli reverzní proxy)
        - "127.0.0.1:8081:8081"
     volumes:
+      # Adresář pro ukládání obrázků
       - dbs2_uploads:/app/uploads
+      # Časové pásmo
       - /etc/localtime:/etc/localtime:ro
     environment:
+      # Konfigurace aplikace
       - GIN_MODE=${GIN_MODE}
       - APP_URL=${APP_URL}
       - SWAGGER=${SWAGGER}
@@ -44,7 +54,8 @@ services:
       - PG_DB=${PG_DB}
       - ACCESS_TOKEN_LIFESPAN=${ACCESS_TOKEN_LIFESPAN}
       - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
-    
+  
+  # Kontejner pro zálohování databáze (https://github.com/jsfraz/mega-backuper)
   dbs2-mega-backuper:
     image: ghcr.io/jsfraz/mega-backuper:latest
     container_name: dbs2-mega-backuper
