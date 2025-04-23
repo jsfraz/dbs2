@@ -5,6 +5,7 @@ import (
 	"dbs2/models"
 	"dbs2/utils"
 	"fmt"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -54,6 +55,21 @@ func DeleteAuthor(c *gin.Context, request *models.Id) error {
 	if err != nil {
 		c.AbortWithStatus(500)
 		return err
+	}
+	// Smazání obrázků
+	books, err := database.GetBooksByAuthor(request.Id)
+	if err != nil {
+		c.AbortWithStatus(500)
+		return err
+	}
+	for _, book := range *books {
+		_ = os.Remove(fmt.Sprintf("./uploads/books/%d.jpg", book.ID))
+		/*
+			if err != nil {
+				c.AbortWithStatus(500)
+				return err
+			}
+		*/
 	}
 	return nil
 }

@@ -131,3 +131,16 @@ func DeleteBook(bookId uint) error {
 	}
 	return nil
 }
+
+// Vrátí knihy podle autora.
+//
+//	@param authorId
+//	@return error
+func GetBooksByAuthor(authorId uint) (*[]models.Book, error) {
+	var books []models.Book = []models.Book{}
+	err := utils.GetSingleton().PostgresDb.Model(&models.Book{}).Where("author_id = ?", authorId).Find(&books).Error
+	if err != nil {
+		return nil, err
+	}
+	return &books, nil
+}
