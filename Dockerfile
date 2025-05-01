@@ -8,5 +8,8 @@ RUN go build -o dbs2
 FROM alpine:latest
 WORKDIR /app
 COPY --from=build /app/dbs2 .
+COPY html ./html
+COPY static ./static
+
 EXPOSE 8081
 CMD ["./dbs2"]

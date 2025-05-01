@@ -68,6 +68,11 @@ func NewRouter() (*fizz.Fizz, error) {
 		})
 	}
 
+	// robots.txt
+	engine.GET("/robots.txt", func(c *gin.Context) {
+		c.File("static/robots.txt")
+	})
+
 	// Ostatní routy
 	AuthRoute(grp)
 	UserRoute(grp)
